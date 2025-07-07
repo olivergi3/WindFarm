@@ -10,18 +10,20 @@
     "express": "^4"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "@cap-js/cds-types": "^0.10.0"
+    "@cap-js/cds-types": "^0.10.0",
+    "@cap-js/sqlite": "^1.11.1"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-windfarm": "cds watch --open windfarm/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-windfarm1": "cds watch --open windfarm1/webapp/index.html?sap-ui-xx-viewCache=false",
-    "watch-windfarms": "cds watch --open windfarms/webapp/index.html?sap-ui-xx-viewCache=false"
+    "watch-task1": "cds watch --open task1/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-task2": "cds watch --open task2/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-task3": "cds watch --open task3/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-task4": "cds watch --open task4/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "sapux": [
-    "app/windfarm",
-    "app/windfarm1",
-    "app/windfarms"
+    "app/task1",
+    "app/task2",
+    "app/task3",
+    "app/task4"
   ]
 }

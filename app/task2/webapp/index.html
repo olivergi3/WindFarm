@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Windfarm-Management</title>
+    <style>
+        html, body, body > div, #container, #container-uiarea {
+            height: 100%;
+        }
+    </style>
+    <script
+        id="sap-ui-bootstrap"
+        src="https://sapui5.hana.ondemand.com/1.136.1/resources/sap-ui-core.js"
+        data-sap-ui-theme="sap_horizon"
+        data-sap-ui-resourceroots='{
+            "ns.task2": "./"
+        }'
+        data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
+        data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true"
+        data-sap-ui-frameOptions="trusted"
+    ></script>
+</head>
+<body class="sapUiBody sapUiSizeCompact" id="content">
+    <div
+        data-sap-ui-component
+        data-name="ns.task2"
+        data-id="container"
+        data-settings='{"id" : "ns.task2"}'
+        data-handle-validation="true"
+    ></div>
+
+    <!-- Map Integration Script mit OData-Backend -->
+    <script>
+        console.log('🗺️ Map integration script loaded');
+        
+        let currentWindFarmData = null;
+        let mapContainer = null;
+        let isMapVisible = false;
+        
+        // Warte auf UI5-Initialisierung
+        sap.ui.getCore().attachInit(function() {
+            console.log('🔧 UI5 Core initialized');
+            
+            // Überwache URL-Änderungen für Navigation
+            let lastUrl = window.location.href;
+            setInterval(() => {
+                if (window.location.href !== lastUrl) {
+                    lastUrl = window.location.href;
+                    console.log('🔄 Navigation detected, hiding map');
+                    hideMap();
+                    setTimeout(() => {
+                        setupMapButton();
+                    }, 2000);
+                }
+            }, 1000);
+            
+            // Initialer Setup
+            setTimeout(() => {
+                setupMapButton();
+            }, 3000);
+        });
+        
+        async function setupMapButton() {
+            console.log('🔧 Setting up map button');
+            
+            // Entferne vorhandene Buttons
+            const existingButtons = document.querySelectorAll('.windpark-map-button');
+            existingButtons.forEach(btn => btn.remove());
+            
+            try {
+                // Suche nach Windpark-Daten (jetzt asynchron)
+                const windFarmData = await extractWindFarmData();
+                if (!windFarmData) {
+                    console.log('⚠️ No wind farm data found');
+                    return;
+                }
+                
+                currentWindFarmData = windFarmData;
+                console.log('📍 Wind farm data extracted:', windFarmData);
+                
+                // Erstelle Map-Button
+                createMapButton();
+            } catch (error) {
+                console.error('❌ Error setting up map button:', error);
+            }
+        }
+        
+        async function extractWindFarmData() {
+            console.log('🔍 Starting wind farm data extraction from OData...');
+            
+            // Extrahiere ID aus der URL
+            const urlHash = window.location.hash;
+            console.log('📍 Current URL:', window.location.href);
+            console.log('📍 URL Hash:', urlHash);
+            
+            // Parse WindFarm ID aus URL
+            let windFarmId = null;
+            const idMatch = urlHash.match(/ID=(\d+)/);
+            if (idMatch) {
+                windFarmId = parseInt(idMatch[1]);
+                console.log('🆔 Extracted WindFarm ID:', windFarmId);
+            }
+            
+            if (!windFarmId) {
+                console.log('⚠️ No WindFarm ID found in URL');
+                return null;
+            }
+            
+            try {
+                // Korrekte OData-URLs basierend auf deinem CDS-Service
+                const possibleUrls = [
+                    `/odata/v4/WindFarmService/WindFarms(ID=${windFarmId},IsActiveEntity=true)`,
+                    `/odata/v4/WindFarmService/WindFarms(${windFarmId})`,
+                    `/odata/v4/WindFarmService/WindFarms/${windFarmId}`,
+                    `http://localhost:4004/odata/v4/WindFarmService/WindFarms(ID=${windFarmId},IsActiveEntity=true)`,
+                    `http://localhost:4004/odata/v4/WindFarmService/WindFarms(${windFarmId})`,
+                    `/WindFarmService/WindFarms(ID=${windFarmId},IsActiveEntity=true)`,
+                    `/WindFarmService/WindFarms(${windFarmId})`
+                ];
+                
+                let windFarmData = null;
+                let successfulUrl = null;
+                
+                console.log('🔍 Detected CDS service: WindFarmService at /odata/v4/WindFarmService');
+                
+                // Probiere verschiedene URLs aus
+                for (const url of possibleUrls) {
+                    try {
+                        console.log('🌐 Trying URL:', url);
+                        const response = await fetch(url);
+                        
+                        if (response.ok) {
+                            windFarmData = await response.json();
+                            successfulUrl = url;
+                            console.log('✅ SUCCESS with URL:', url);
+                            console.log('✅ Received OData response:', windFarmData);
+                            break;
+                        } else {
+                            console.log('❌ Failed with status:', response.status, 'for URL:', url);
+                        }
+                    } catch (urlError) {
+                        console.log('❌ Network error for URL:', url, urlError.message);
+                    }
+                }
+                
+                if (!windFarmData) {
+                    console.warn('❌ All WindFarmService URLs failed.');
+                    console.warn('💡 Try accessing: http://localhost:4004/odata/v4/WindFarmService/$metadata');
+                    console.warn('🔄 Falling back to hardcoded coordinates...');
+                    return extractWindFarmDataFromDOM();
+                }
+                
+                console.log('✅ Raw data from WindFarmService:', windFarmData);
+                
+                // Flexible Feldnamen-Suche (da CSV-Spalten variieren können)
+                const possibleLatFields = ['latitude', 'Latitude', 'lat', 'Lat', 'LATITUDE'];
+                const possibleLonFields = ['longitude', 'Longitude', 'lon', 'Lon', 'lng', 'Lng', 'LONGITUDE'];
+                const possibleNameFields = ['windFarm', 'name', 'Name', 'windfarm', 'WindFarm', 'WINDFARM'];
+                
+                let latitude = null;
+                let longitude = null;
+                let windFarmName = null;
+                
+                // Suche nach Latitude
+                for (const field of possibleLatFields) {
+                    if (windFarmData[field] !== undefined && windFarmData[field] !== null) {
+                        latitude = parseFloat(windFarmData[field]);
+                        console.log(`📍 Found latitude in field '${field}':`, latitude);
+                        break;
+                    }
+                }
+                
+                // Suche nach Longitude
+                for (const field of possibleLonFields) {
+                    if (windFarmData[field] !== undefined && windFarmData[field] !== null) {
+                        longitude = parseFloat(windFarmData[field]);
+                        console.log(`📍 Found longitude in field '${field}':`, longitude);
+                        break;
+                    }
+                }
+                
+                // Suche nach Name
+                for (const field of possibleNameFields) {
+                    if (windFarmData[field] !== undefined && windFarmData[field] !== null) {
+                        windFarmName = windFarmData[field];
+                        console.log(`📍 Found name in field '${field}':`, windFarmName);
+                        break;
+                    }
+                }
+                
+                // Debug: Zeige alle verfügbaren Felder
+                console.log('🔍 Available fields in CSV response:', Object.keys(windFarmData));
+                
+                if (!latitude || !longitude) {
+                    console.warn('⚠️ Missing coordinates in CSV data. Available fields:', Object.keys(windFarmData));
+                    console.warn('⚠️ Raw CSV data:', windFarmData);
+                    return extractWindFarmDataFromDOM();
+                }
+                
+                // Bestimme Gewässer basierend auf echten Koordinaten
+                let waterBody = 'Unknown Water';
+                let nearestCoast = 'Unknown Coast';
+                
+                const lat = parseFloat(windFarmData.latitude);
+                const lon = parseFloat(windFarmData.longitude);
+                
+                if (lat > 53 && lat < 56 && lon > 10 && lon < 16) {
+                    waterBody = 'Baltic Sea';
+                    nearestCoast = 'German Coast';
+                } else if (lat > 51 && lat < 56 && lon > 2 && lon < 10) {
+                    waterBody = 'North Sea';
+                    nearestCoast = 'German/Dutch Coast';
+                } else if (lat > 50 && lat < 53 && lon > -1 && lon < 3) {
+                    waterBody = 'English Channel';
+                    nearestCoast = 'English/French Coast';
+                } else if (lat > 54 && lat < 58 && lon > 5 && lon < 12) {
+                    waterBody = 'North Sea';
+                    nearestCoast = 'Danish/Norwegian Coast';
+                }
+                
+                const processedData = {
+                    windFarm: windFarmData.windFarm || windFarmData.name || `Wind Farm ${windFarmId}`,
+                    latitude: lat,
+                    longitude: lon,
+                    waterBody: waterBody,
+                    nearestCoast: nearestCoast,
+                    // Zusätzliche Daten aus der CSV wenn verfügbar
+                    totalCapacity: windFarmData.totalCapacity || 'N/A',
+                    turbineCount: windFarmData.turbineCount || 'N/A',
+                    status: windFarmData.status || 'N/A'
+                };
+                
+                console.log('✅ Processed wind farm data:', processedData);
+                return processedData;
+                
+            } catch (error) {
+                console.error('❌ Error fetching wind farm data:', error);
+                
+                // Fallback: Versuche DOM-Extraktion
+                console.log('🔄 Falling back to DOM extraction...');
+                return extractWindFarmDataFromDOM();
+            }
+        }
+        
+        function extractWindFarmDataFromDOM() {
+            // Fallback-Methode falls OData nicht funktioniert
+            console.log('🔍 Extracting data from DOM as fallback...');
+            
+            // Windpark-Datenbank mit korrekten Koordinaten
+            const windFarmDatabase = {
+                1: {
+                    windFarm: 'Arkona',
+                    latitude: 54.6762,
+                    longitude: 13.7742,
+                    waterBody: 'Baltic Sea',
+                    nearestCoast: 'German Coast'
+                },
+                2: {
+                    windFarm: 'Borkum Riffgrund 1',
+                    latitude: 53.9833,
+                    longitude: 6.3167,
+                    waterBody: 'North Sea',
+                    nearestCoast: 'German Coast'
+                },
+                3: {
+                    windFarm: 'Sandbank',
+                    latitude: 54.1333,
+                    longitude: 7.9167,
+                    waterBody: 'North Sea',
+                    nearestCoast: 'German Coast'
+                },
+                4: {
+                    windFarm: 'Gwynt y Môr',
+                    latitude: 53.4833,
+                    longitude: -3.5667,
+                    waterBody: 'Irish Sea',
+                    nearestCoast: 'Welsh Coast'
+                },
+                5: {
+                    windFarm: 'London Array',
+                    latitude: 51.6167,
+                    longitude: 1.0833,
+                    waterBody: 'Thames Estuary',
+                    nearestCoast: 'English Coast'
+                },
+                6: {
+                    windFarm: 'Riffgat',
+                    latitude: 53.8167,
+                    longitude: 6.4167,
+                    waterBody: 'North Sea',
+                    nearestCoast: 'German Coast'
+                },
+                7: {
+                    windFarm: 'Alpha Ventus',
+                    latitude: 54.0167,
+                    longitude: 6.5833,
+                    waterBody: 'North Sea',
+                    nearestCoast: 'German Coast'
+                },
+                8: {
+                    windFarm: 'EnBW Baltic 1',
+                    latitude: 54.5167,
+                    longitude: 12.9833,
+                    waterBody: 'Baltic Sea',
+                    nearestCoast: 'German Coast'
+                },
+                9: {
+                    windFarm: 'Nordsee One',
+                    latitude: 54.4167,
+                    longitude: 6.2833,
+                    waterBody: 'North Sea',
+                    nearestCoast: 'German Coast'
+                },
+                10: {
+                    windFarm: 'Merkur Offshore',
+                    latitude: 53.9667,
+                    longitude: 6.2333,
+                    waterBody: 'North Sea',
+                    nearestCoast: 'German Coast'
+                }
+            };
+            
+            // Extrahiere ID aus URL
+            const urlHash = window.location.hash;
+            const idMatch = urlHash.match(/ID=(\d+)/);
+            
+            if (idMatch) {
+                const windFarmId = parseInt(idMatch[1]);
+                console.log('🔍 Looking up wind farm ID:', windFarmId);
+                
+                if (windFarmDatabase[windFarmId]) {
+                    console.log('✅ Found wind farm data in database:', windFarmDatabase[windFarmId]);
+                    return windFarmDatabase[windFarmId];
+                } else {
+                    console.log('⚠️ Unknown wind farm ID, using default');
+                    // Fallback für unbekannte IDs
+                    return {
+                        windFarm: `Wind Farm ${windFarmId}`,
+                        latitude: 54.0,
+                        longitude: 7.0,
+                        waterBody: 'North Sea',
+                        nearestCoast: 'European Coast'
+                    };
+                }
+            }
+            
+            console.log('⚠️ No ID found in URL');
+            return null;
+        }
+        
+        function createMapButton() {
+            // Erstelle den Map-Button
+            const mapButton = document.createElement('div');
+            mapButton.className = 'windpark-map-button';
+            mapButton.innerHTML = `
+                <button onclick="toggleMap()" style="
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    z-index: 9999;
+                    background: linear-gradient(135deg, #0066cc, #004499);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    padding: 12px 20px;
+                    font-size: 14px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    transition: all 0.3s ease;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    🗺️ Show Map
+                </button>
+            `;
+            
+            document.body.appendChild(mapButton);
+            console.log('🔘 Map button created');
+        }
+        
+        function toggleMap() {
+            if (isMapVisible) {
+                hideMap();
+            } else {
+                showMap();
+            }
+        }
+        
+        function showMap() {
+            if (!currentWindFarmData) {
+                showToast('⚠️ Keine Windpark-Daten verfügbar');
+                return;
+            }
+            
+            console.log('🗺️ Showing map for:', currentWindFarmData.windFarm);
+            
+            // Erstelle Map-Container
+            mapContainer = document.createElement('div');
+            mapContainer.id = 'windpark-map-container';
+            mapContainer.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                right: 20px;
+                width: 400px;
+                height: 500px;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                z-index: 9998;
+                overflow: hidden;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                animation: slideIn 0.3s ease-out;
+            `;
+            
+            // Map-Inhalt
+            const mapContent = createMapContent(currentWindFarmData);
+            mapContainer.innerHTML = mapContent;
+            
+            document.body.appendChild(mapContainer);
+            isMapVisible = true;
+            
+            // Button-Text ändern
+            const button = document.querySelector('.windpark-map-button button');
+            if (button) {
+                button.innerHTML = '❌ Close Map';
+                button.style.background = 'linear-gradient(135deg, #cc6600, #994400)';
+            }
+            
+            showToast('🗺️ Karte geladen für ' + currentWindFarmData.windFarm);
+            
+            // CSS Animation hinzufügen
+            if (!document.querySelector('#map-animations')) {
+                const style = document.createElement('style');
+                style.id = 'map-animations';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        function hideMap() {
+            if (mapContainer) {
+                mapContainer.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    if (mapContainer) {
+                        mapContainer.remove();
+                        mapContainer = null;
+                    }
+                }, 300);
+            }
+            
+            isMapVisible = false;
+            
+            // Button-Text zurücksetzen
+            const button = document.querySelector('.windpark-map-button button');
+            if (button) {
+                button.innerHTML = '🗺️ Karte anzeigen';
+                button.style.background = 'linear-gradient(135deg, #0066cc, #004499)';
+            }
+        }
+        
+        function createMapContent(data) {
+            const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${data.longitude-0.1},${data.latitude-0.1},${data.longitude+0.1},${data.latitude+0.1}&layer=mapnik&marker=${data.latitude},${data.longitude}`;
+            
+            return `
+                <div style="height: 100%; display: flex; flex-direction: column;">
+                    <!-- Header -->
+                    <div style="
+                        background: linear-gradient(135deg, #0066cc, #004499);
+                        color: white;
+                        padding: 15px;
+                        text-align: center;
+                        font-weight: bold;
+                        font-size: 16px;
+                    ">
+                        📍 ${data.windFarm}
+                    </div>
+                    
+                    <!-- Koordinaten und zusätzliche Infos -->
+                    <div style="
+                        padding: 12px;
+                        background: #f8f9fa;
+                        border-bottom: 1px solid #e9ecef;
+                        font-size: 13px;
+                        color: #666;
+                    ">
+                        🌐 ${data.latitude.toFixed(6)}°N, ${data.longitude.toFixed(6)}°E<br>
+                        🌊 ${data.waterBody} | 🏖️ ${data.nearestCoast}
+                        ${data.totalCapacity && data.totalCapacity !== 'N/A' && data.totalCapacity !== 'undefined' ? `<br>⚡ ${data.totalCapacity} MW` : ''}
+                        ${data.turbineCount && data.turbineCount !== 'N/A' && data.turbineCount !== 'undefined' ? ` | 🏭 ${data.turbineCount} Turbines` : ''}
+                    </div>
+                    
+                    <!-- Karte -->
+                    <div style="flex: 1; position: relative;">
+                        <iframe
+                            src="${mapUrl}"
+                            width="100%"
+                            height="100%"
+                            style="border: none;"
+                            title="OpenStreetMap für ${data.windFarm}"
+                        ></iframe>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div style="
+                        padding: 12px;
+                        background: #f8f9fa;
+                        display: flex;
+                        gap: 8px;
+                        justify-content: space-between;
+                        border-top: 1px solid #e9ecef;
+                    ">
+                        <button onclick="openGoogleMaps(${data.latitude}, ${data.longitude})" style="
+                            flex: 1;
+                            background: #4285f4;
+                            color: white;
+                            border: none;
+                            padding: 8px 4px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">📍 Google Maps</button>
+                        
+                        <button onclick="openOpenStreetMap(${data.latitude}, ${data.longitude})" style="
+                            flex: 1;
+                            background: #7ebc6f;
+                            color: white;
+                            border: none;
+                            padding: 8px 4px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">🗺️ OSM</button>
+                        
+                        <button onclick="copyCoordinates(${data.latitude}, ${data.longitude})" style="
+                            flex: 1;
+                            background: #6c757d;
+                            color: white;
+                            border: none;
+                            padding: 8px 4px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">📋 Copy</button>
+                        
+                        <button onclick="showWeather(${data.latitude}, ${data.longitude})" style="
+                            flex: 1;
+                            background: #ffc107;
+                            color: black;
+                            border: none;
+                            padding: 8px 4px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        ">🌤️ Weather</button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Utility-Funktionen
+        function openGoogleMaps(lat, lon) {
+            const url = `https://www.google.com/maps?q=${lat},${lon}`;
+            window.open(url, '_blank');
+            showToast('🗺️ Google Maps geöffnet');
+        }
+        
+        function openOpenStreetMap(lat, lon) {
+            const url = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}&zoom=12`;
+            window.open(url, '_blank');
+            showToast('🗺️ OpenStreetMap geöffnet');
+        }
+        
+        function copyCoordinates(lat, lon) {
+            const coords = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+            navigator.clipboard.writeText(coords).then(() => {
+                showToast('📋 Koordinaten kopiert: ' + coords);
+            }).catch(() => {
+                showToast('⚠️ Kopieren fehlgeschlagen');
+            });
+        }
+        
+        function showWeather(lat, lon) {
+            const url = `https://openweathermap.org/weathermap?basemap=map&cities=true&layer=temperature&lat=${lat}&lon=${lon}&zoom=8`;
+            window.open(url, '_blank');
+            showToast('🌤️ Wetter-Karte geöffnet');
+        }
+        
+        function showToast(message) {
+            // Entferne vorhandene Toasts
+            const existingToasts = document.querySelectorAll('.windpark-toast');
+            existingToasts.forEach(toast => toast.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = 'windpark-toast';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 80px;
+                left: 20px;
+                background: rgba(0,0,0,0.8);
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                z-index: 10000;
+                font-size: 14px;
+                max-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                animation: fadeInOut 3s ease-in-out;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Toast nach 3 Sekunden entfernen
+            setTimeout(() => {
+                if (toast) {
+                    toast.remove();
+                }
+            }, 3000);
+            
+            // CSS Animation für Toast
+            if (!document.querySelector('#toast-animations')) {
+                const style = document.createElement('style');
+                style.id = 'toast-animations';
+                style.textContent = `
+                    @keyframes fadeInOut {
+                        0% { opacity: 0; transform: translateY(20px); }
+                        15% { opacity: 1; transform: translateY(0); }
+                        85% { opacity: 1; transform: translateY(0); }
+                        100% { opacity: 0; transform: translateY(-20px); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+    </script>
+</body>
+</html>

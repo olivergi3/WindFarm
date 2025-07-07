@@ -1,0 +1,181 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "ns.task3.extended",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "2.0.0"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:alp",
+      "version": "1.17.6",
+      "toolsId": "5716e171-529f-43c5-adbb-f4b82ade529f"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/WindFarmService/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "sap-icon://energy-saving-lightbulb",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.136.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {},
+        "sap.suite.ui.commons": {},
+        "sap.viz": {},
+        "sap.chart": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "ns.task3.extended.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "WindFarmCorrelationAnalysisList",
+          "target": "WindFarmCorrelationAnalysisList"
+        },
+        {
+          "pattern": "WindFarmCorrelationAnalysis({key}):?query:",
+          "name": "WindFarmCorrelationAnalysisObjectPage",
+          "target": "WindFarmCorrelationAnalysisObjectPage"
+        }
+      ],
+      "targets": {
+        "WindFarmCorrelationAnalysisList": {
+          "type": "Component",
+          "id": "WindFarmCorrelationAnalysisList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/WindFarmCorrelationAnalysis",
+              "variantManagement": "Page",
+              "initialLoad": "Enabled",
+              "navigation": {
+                "WindFarmCorrelationAnalysis": {
+                  "detail": {
+                    "route": "WindFarmCorrelationAnalysisObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.Chart#corrMain": {
+                  "chartSettings": {
+                    "showDataLabel": true,
+                    "showLegend": true,
+                    "enableSelection": true,
+                    "plotArea": {
+                      "dataLabel": {
+                        "visible": true
+                      }
+                    }
+                  }
+                },
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "AnalyticalTable",
+                    "selectionMode": "Multi",
+                    "enableAutoBinding": true,
+                    "enableExport": true,
+                    "enableFullScreen": true,
+                    "condensedTableLayout": false,
+                    "enableColumnFreeze": true,
+                    "enableColumnReordering": true
+                  }
+                }
+              },
+              "views": {
+                "paths": [
+                  {
+                    "primary": [
+                      {
+                        "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant"
+                      }
+                    ],
+                    "secondary": [
+                      {
+                        "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
+                      }
+                    ],
+                    "defaultPath": "primary"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "WindFarmCorrelationAnalysisObjectPage": {
+          "type": "Component",
+          "id": "WindFarmCorrelationAnalysisObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/WindFarmCorrelationAnalysis"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "analytical"
+  }
+}
