@@ -75,7 +75,7 @@ annotate service.WindFarmAnalytics with {
     
     // Wind Farm Area with Industry Benchmark Tooltip
     windFarmAreaKm2 @(
-        Common.QuickInfo : 'Calculated from total rated power and power density. Industry varies widely based on turbine spacing and terrain.'
+        Common.QuickInfo : 'Industry Comparison: Range 2-5000 turbines | Average: 247.58 km² | Median: 39 km²'
     );
     
     // Rotor Diameter with Industry Benchmark Tooltip
@@ -416,7 +416,8 @@ annotate service.WindFarmAnalytics with @UI : {
       { 
         $Type : 'UI.DataField',
         Value : windFarmRatedPowerMW, 
-        Label : 'Total Rated Power (MW)'
+        Label : 'Total Rated Power (MW)',
+        @UI.Hidden,
       }
     ]
   },

@@ -258,11 +258,6 @@ annotate service.WindFarms with @(
                 Value : nacelleHeightM,
                 Label : '{i18n>Average Nacelle Height (m)}'
             },
-            {
-                $Type : 'UI.DataField',
-                Value : windFarmDensityMWKm2,
-                Label : '{i18n>Power Density (MW/km²)}'
-            },
         ]
     },
 
@@ -289,6 +284,11 @@ annotate service.WindFarms with @(
                 Value : wtRatedPowerMW,
                 Label : '{i18n>Wind Turbine Rated Power (MW)}'
             },
+            {
+                $Type : 'UI.DataField',
+                Value : windFarmDensityMWKm2,
+                Label : '{i18n>Power Density (MW/km²)}',
+            },
         ]
     },
 
@@ -297,9 +297,15 @@ annotate service.WindFarms with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Value : capacityFactorCategory,
-                Label: '{i18n>Capacity Factor Class}',
-                Criticality: capacityFactorCriticality
+                Value : turbineCountCategory,
+                Label: '{i18n>Turbine Count Class}',
+                Criticality: turbineCountCriticality
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : windFarmAreaCategory,
+                Label: '{i18n>Wind Farm Area Class}',
+                Criticality: windFarmAreaCriticality
             },
             {
                 $Type : 'UI.DataField',
@@ -312,6 +318,12 @@ annotate service.WindFarms with @(
                 Value : powerRatingCategory,
                 Label: '{i18n>Power Rating Class}',
                 Criticality: powerRatingCriticality
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : capacityFactorCategory,
+                Label: '{i18n>Capacity Factor Class}',
+                Criticality: capacityFactorCriticality
             },
             {
                 $Type : 'UI.DataField',
@@ -330,18 +342,6 @@ annotate service.WindFarms with @(
                 Value : nacelleHeightCategory,
                 Label: '{i18n>Nacelle Height Class}',
                 Criticality: nacelleHeightCriticality
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : windFarmAreaCategory,
-                Label: '{i18n>Wind Farm Area Class}',
-                Criticality: windFarmAreaCriticality
-            },
-            {
-                $Type : 'UI.DataField',
-                Value : turbineCountCategory,
-                Label: '{i18n>Turbine Count Class}',
-                Criticality: turbineCountCriticality
             },
             {
                 $Type : 'UI.DataField',
