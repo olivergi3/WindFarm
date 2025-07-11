@@ -1,0 +1,50 @@
+{
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/api/(.*)$",
+      "target": "$1",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/windfarm_mgmt_task1/(.*)$",
+      "target": "/windfarm_mgmt_task1/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/windfarm_mgmt_task2/(.*)$",
+      "target": "/windfarm_mgmt_task2/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/windfarm_mgmt_task3/(.*)$",
+      "target": "/windfarm_mgmt_task3/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/windfarm_mgmt_task4/(.*)$",
+      "target": "/windfarm_mgmt_task4/$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/$",
+      "target": "/index.html",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

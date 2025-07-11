@@ -7,16 +7,10 @@ entity WindFarms : managed {
     // basic identification
     windFarm          : String(100) @title: 'Wind Farm Name';
     country           : String(10)  @title: 'Country';
-    waterBody         : String(10)  @title: 'Sea';
-
-      // NEUES FELD FÜR DESCRIPTION
+    waterBody         : String(50)  @title: 'Sea';
     description       : String(500) @title: 'Description';
-   
-    // NEUE FELDER FÜR KOORDINATEN
     latitude          : Decimal(10,7) @title: 'Latitude';
     longitude         : Decimal(10,7) @title: 'Longitude';
-   
-    // NEUES FELD für Bild-URLs
     windFarmImageUrl  : String(500) @title: 'Wind Farm Image URL';
    
     // power and performance metrics

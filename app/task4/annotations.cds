@@ -10,7 +10,8 @@ annotate service.WindFarmRecommendations with {
                 LocalDataProperty : country,
                 ValueListProperty : 'country'
             }]
-        }
+        },
+        Common.Label : '{i18n>Country1}',
     );
 
      // Wind Farm Value Help - references the grouped windFarm entity
@@ -34,6 +35,36 @@ annotate service.WindFarmRecommendations with {
                 LocalDataProperty : waterBody,
                 ValueListProperty : 'waterBody'
             }]
+        }
+    );
+
+    performanceProfile @(
+        Common.ValueList: {
+            Label: 'Performance Profile Categories',
+            CollectionPath: 'PerformanceProfileValueHelp',
+            SearchSupported: true,
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: performanceProfile,
+                    ValueListProperty: 'performanceprofile'
+                }
+            ]
+        }
+    );
+
+    optimizationPotential @(
+        Common.ValueList: {
+            Label: 'Optimization Potential Categories',
+            CollectionPath: 'OptimizationPotentialValueHelp',
+            SearchSupported: true,
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: optimizationPotential,
+                    ValueListProperty: 'optimizationpotential'
+                }
+            ]
         }
     );
 };
@@ -595,4 +626,5 @@ annotate service.WindFarmRecommendations with @(
         Criticality: furtherStudyCriticality
     }
 );
+
 

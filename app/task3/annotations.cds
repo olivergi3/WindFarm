@@ -66,8 +66,6 @@ annotate service.WindFarmCorrelationAnalysis with @Aggregation.ApplySupported: {
         capacityFactorReal,
         windFarmEfficiency,
 
-
-        
         // efficiency correlation patterns
         heightEfficiencyProfile,
         areaEfficiencyProfile,
@@ -213,24 +211,6 @@ annotate service.WindFarmCorrelationAnalysis with @(
         country,
         windFarm,
         waterBody
-        // filter for efficiency correlation
-        //heightEfficiencyProfile,
-        //eaEfficiencyProfile,
-        //rotorEfficiencyProfile,
-        //turbineCountEfficiencyProfile,
-        //wtPowerEfficiencyProfile,
-        //farmPowerEfficiencyProfile,
-        //densityEfficiencyProfile,
-        // filter for capacity factor correlation
-        //rotorCapacityProfile,
-        //heightCapacityProfile,
-        //farmPowerCapacityProfile,
-        // filter for rated power correlation
-        //densityRatedPowerProfile,
-        //turbineCountRatedPowerProfile,
-        // filter for wt power correlation
-        //densityWtPowerProfile,
-        //turbineCountWtPowerProfile
     ],
     
     // lineitem with all correlations

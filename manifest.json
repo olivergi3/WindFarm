@@ -1,0 +1,172 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "ns.task4",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.18.1",
+      "toolsId": "4e4a0c95-c41b-458c-862c-f0c7ff69231c"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "intent1": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "WindFarmRecommendations",
+          "action": "display"
+        }
+      }
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/WindFarmService/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.136.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "ns.task4.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {},
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "WindFarmRecommendationsList",
+          "target": "WindFarmRecommendationsList"
+        },
+        {
+          "pattern": "WindFarmRecommendations({key}):?query:",
+          "name": "WindFarmRecommendationsObjectPage",
+          "target": "WindFarmRecommendationsObjectPage"
+        }
+      ],
+      "targets": {
+        "WindFarmRecommendationsList": {
+          "type": "Component",
+          "id": "WindFarmRecommendationsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/WindFarmRecommendations",
+              "initialLoad": true,
+              "variantManagement": "Page",
+              "navigation": {
+                "WindFarmRecommendations": {
+                  "detail": {
+                    "route": "WindFarmRecommendationsObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "AnalyticalTable",
+                    "selectionMode": "Auto"
+                  }
+                }
+              },
+              "views": {
+                "paths": [
+                  {
+                    "primary": [
+                      {
+                        "annotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant"
+                      }
+                    ],
+                    "secondary": [
+                      {
+                        "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
+                      }
+                    ],
+                    "defaultPath": "primary"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "WindFarmRecommendationsObjectPage": {
+          "type": "Component",
+          "id": "WindFarmRecommendationsObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/WindFarmRecommendations"
+            }
+          }
+        }
+      }
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "analytical"
+  }
+}

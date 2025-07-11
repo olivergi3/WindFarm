@@ -10,7 +10,7 @@ sap.ui.define([
             onInit: function () {
                 console.log("🔧 DEBUG: Controller Extension initialized");
                 
-                // Versuche mehrfach die Karte hinzuzufügen
+                
                 let attempts = 0;
                 const maxAttempts = 10;
                 
@@ -52,20 +52,20 @@ sap.ui.define([
                 return false;
             }
 
-            // Debug: Liste alle UI Controls auf
+            
             console.log("🔧 DEBUG: Searching for location section...");
             this._debugPageStructure();
 
-            // Versuche die Karte hinzuzufügen
+            
             return this._injectMapIntoLocationSection(oWindFarm);
         },
 
         _debugPageStructure: function() {
-            // Debug: Zeige Page-Struktur
+            
             const allElements = document.querySelectorAll('*');
             console.log("🔧 DEBUG: Total elements on page:", allElements.length);
             
-            // Suche nach möglichen Containern
+            
             const panels = document.querySelectorAll('[role="region"], .sapUxAPObjectPageSection, .sapMPanel');
             console.log("🔧 DEBUG: Found panels:", panels.length);
             
@@ -78,7 +78,7 @@ sap.ui.define([
         _injectMapIntoLocationSection: function(oWindFarm) {
             console.log("🔧 DEBUG: _injectMapIntoLocationSection called");
             
-            // Verschiedene Selektoren ausprobieren
+        
             const selectors = [
                 '[role="region"]',
                 '.sapUxAPObjectPageSection',
@@ -107,10 +107,10 @@ sap.ui.define([
 
             if (!locationContainer) {
                 console.log("🔧 DEBUG: No location container found, trying to add to any available container");
-                // Fallback: Füge zur ersten verfügbaren Section hinzu
+                
                 const sections = document.querySelectorAll('.sapUxAPObjectPageSection');
                 if (sections.length > 1) {
-                    locationContainer = sections[1]; // Nimm die zweite Section
+                    locationContainer = sections[1]; 
                     console.log("🔧 DEBUG: Using fallback container:", locationContainer);
                 }
             }

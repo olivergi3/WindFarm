@@ -1,0 +1,2 @@
+sap.ui.require(["sap/fe/test/JourneyRunner","ns/task1/test/integration/FirstJourney","ns/task1/test/integration/pages/WindFarmAnalyticsList","ns/task1/test/integration/pages/WindFarmAnalyticsObjectPage"],function(t,n,e,s){"use strict";var t=new t({launchUrl:sap.ui.require.toUrl("ns/task1")+"/index.html"});t.run({pages:{onTheWindFarmAnalyticsList:e,onTheWindFarmAnalyticsObjectPage:s}},n.run)});
+//# sourceMappingURL=opaTests.qunit.js.map

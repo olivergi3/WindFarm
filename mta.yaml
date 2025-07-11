@@ -1,0 +1,172 @@
+_schema-version: "3.1"
+ID: windfarm-mgmt
+description: Wind Farm Management Application
+version: 1.0.0
+
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+        - rm -rf windfarm-mgmt-ui-deployer/resources
+        - npm install --production
+        - npx -p @sap/cds-dk cds build --production
+        - mkdir -p gen/ui-resources
+
+modules:
+  - name: windfarm-mgmt-srv
+    type: nodejs
+    path: .
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 128M
+    build-parameters:
+      builder: npm-ci
+      exclude:
+        - node_modules/
+        - .git/
+    requires:
+      - name: windfarm-mgmt-auth
+      - name: windfarm-mgmt-db
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+
+  - name: windfarm-mgmt-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 128M
+    requires:
+      - name: windfarm-mgmt-db
+
+  # UI5 Build modules for each task
+  - name: windfarm-mgmt-task1
+    type: html5
+    path: app/task1
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npx -p @ui5/cli ui5 build --dest ../../gen/app/task1/dist --include-task=generateManifestBundle --include-task=generateCachebusterInfo
+        - bash -c "cd ../../gen/app/task1/dist && zip -r ../task1.zip * -x '*.zip'"
+        - rm -rf node_modules
+      supported-platforms: []
+      build-result: ../../gen/app/task1
+
+  - name: windfarm-mgmt-task2
+    type: html5
+    path: app/task2
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npx -p @ui5/cli ui5 build --dest ../../gen/app/task2/dist --include-task=generateManifestBundle --include-task=generateCachebusterInfo
+        - bash -c "cd ../../gen/app/task2/dist && zip -r ../task2.zip * -x '*.zip'"
+        - rm -rf node_modules
+      supported-platforms: []
+      build-result: ../../gen/app/task2
+
+  - name: windfarm-mgmt-task3
+    type: html5
+    path: app/task3
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npx -p @ui5/cli ui5 build --dest ../../gen/app/task3/dist --include-task=generateManifestBundle --include-task=generateCachebusterInfo
+        - bash -c "cd ../../gen/app/task3/dist && zip -r ../task3.zip * -x '*.zip'"
+        - rm -rf node_modules
+      supported-platforms: []
+      build-result: ../../gen/app/task3
+
+  - name: windfarm-mgmt-task4
+    type: html5
+    path: app/task4
+    build-parameters:
+      builder: custom
+      commands:
+        - npm install
+        - npx -p @ui5/cli ui5 build --dest ../../gen/app/task4/dist --include-task=generateManifestBundle --include-task=generateCachebusterInfo
+        - bash -c "cd ../../gen/app/task4/dist && zip -r ../task4.zip * -x '*.zip'"
+        - rm -rf node_modules
+      supported-platforms: []
+      build-result: ../../gen/app/task4
+
+  # UI Resources deployment module - KORRIGIERT
+  - name: windfarm-mgmt-ui-resources
+    type: com.sap.application.content
+    path: gen/ui-resources
+    requires:
+      - name: windfarm-mgmt-html5-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: .
+      requires:
+        - name: windfarm-mgmt-task1
+          artifacts:
+            - task1.zip
+          target-path: resources/
+        - name: windfarm-mgmt-task2
+          artifacts:
+            - task2.zip
+          target-path: resources/
+        - name: windfarm-mgmt-task3
+          artifacts:
+            - task3.zip
+          target-path: resources/
+        - name: windfarm-mgmt-task4
+          artifacts:
+            - task4.zip
+          target-path: resources/
+
+  # Application Router module
+  - name: windfarm-mgmt-approuter
+    type: nodejs
+    path: packages/deploy-int/approuter
+    parameters:
+      memory: 128M
+    requires:
+      - name: windfarm-mgmt-auth
+      - name: windfarm-mgmt-html5-repo-runtime
+      - name: windfarm-mgmt-portal
+      - name: srv-api
+        group: destinations
+        properties:
+          forwardAuthToken: true
+          strictSSL: true
+          name: srv-api
+          url: '~{srv-url}'
+
+resources:
+  - name: windfarm-mgmt-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: windfarm-mgmt-${org}-${space}
+        tenant-mode: dedicated
+  - name: windfarm-mgmt-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: windfarm-mgmt-html5-repo-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+  - name: windfarm-mgmt-html5-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: windfarm-mgmt-portal
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: portal
+      service-plan: standard

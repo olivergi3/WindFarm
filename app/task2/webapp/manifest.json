@@ -1,11 +1,11 @@
 {
   "_version": "1.65.0",
   "sap.app": {
-    "id": "ns.task2",
+    "id": "windfarm_mgmt_task2",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
-      "version": "0.0.1"
+      "version": "1.0.0"
     },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -14,6 +14,18 @@
       "id": "@sap/generator-fiori:lrop",
       "version": "1.17.6",
       "toolsId": "b287fc80-33d7-40f5-8089-62ced54f2e5d"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "intent1": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "WindFarms",
+          "action": "display"
+        }
+      }
     },
     "dataSources": {
       "mainService": {
@@ -60,7 +72,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "ns.task2.i18n.i18n"
+          "bundleName": "windfarm_mgmt_task2.i18n.i18n"
         }
       },
       "": {
@@ -138,5 +150,9 @@
   "sap.fiori": {
     "registrationIds": [],
     "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "windfarm_mgmt"
   }
 }

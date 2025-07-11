@@ -40,11 +40,11 @@
         let mapContainer = null;
         let isMapVisible = false;
         
-        // Warte auf UI5-Initialisierung
+        
         sap.ui.getCore().attachInit(function() {
             console.log('🔧 UI5 Core initialized');
             
-            // Überwache URL-Änderungen für Navigation
+            
             let lastUrl = window.location.href;
             setInterval(() => {
                 if (window.location.href !== lastUrl) {
@@ -66,12 +66,12 @@
         async function setupMapButton() {
             console.log('🔧 Setting up map button');
             
-            // Entferne vorhandene Buttons
+            
             const existingButtons = document.querySelectorAll('.windpark-map-button');
             existingButtons.forEach(btn => btn.remove());
             
             try {
-                // Suche nach Windpark-Daten (jetzt asynchron)
+                
                 const windFarmData = await extractWindFarmData();
                 if (!windFarmData) {
                     console.log('⚠️ No wind farm data found');
@@ -81,7 +81,7 @@
                 currentWindFarmData = windFarmData;
                 console.log('📍 Wind farm data extracted:', windFarmData);
                 
-                // Erstelle Map-Button
+                
                 createMapButton();
             } catch (error) {
                 console.error('❌ Error setting up map button:', error);
@@ -91,12 +91,12 @@
         async function extractWindFarmData() {
             console.log('🔍 Starting wind farm data extraction from OData...');
             
-            // Extrahiere ID aus der URL
+            // Extrahiert ID aus der URL
             const urlHash = window.location.hash;
             console.log('📍 Current URL:', window.location.href);
             console.log('📍 URL Hash:', urlHash);
             
-            // Parse WindFarm ID aus URL
+            
             let windFarmId = null;
             const idMatch = urlHash.match(/ID=(\d+)/);
             if (idMatch) {
@@ -110,7 +110,7 @@
             }
             
             try {
-                // Korrekte OData-URLs basierend auf deinem CDS-Service
+                
                 const possibleUrls = [
                     `/odata/v4/WindFarmService/WindFarms(ID=${windFarmId},IsActiveEntity=true)`,
                     `/odata/v4/WindFarmService/WindFarms(${windFarmId})`,
@@ -126,7 +126,7 @@
                 
                 console.log('🔍 Detected CDS service: WindFarmService at /odata/v4/WindFarmService');
                 
-                // Probiere verschiedene URLs aus
+                
                 for (const url of possibleUrls) {
                     try {
                         console.log('🌐 Trying URL:', url);
@@ -155,7 +155,7 @@
                 
                 console.log('✅ Raw data from WindFarmService:', windFarmData);
                 
-                // Flexible Feldnamen-Suche (da CSV-Spalten variieren können)
+                
                 const possibleLatFields = ['latitude', 'Latitude', 'lat', 'Lat', 'LATITUDE'];
                 const possibleLonFields = ['longitude', 'Longitude', 'lon', 'Lon', 'lng', 'Lng', 'LONGITUDE'];
                 const possibleNameFields = ['windFarm', 'name', 'Name', 'windfarm', 'WindFarm', 'WINDFARM'];
@@ -191,7 +191,7 @@
                     }
                 }
                 
-                // Debug: Zeige alle verfügbaren Felder
+                
                 console.log('🔍 Available fields in CSV response:', Object.keys(windFarmData));
                 
                 if (!latitude || !longitude) {
@@ -200,7 +200,7 @@
                     return extractWindFarmDataFromDOM();
                 }
                 
-                // Bestimme Gewässer basierend auf echten Koordinaten
+                
                 let waterBody = 'Unknown Water';
                 let nearestCoast = 'Unknown Coast';
                 
@@ -239,17 +239,17 @@
             } catch (error) {
                 console.error('❌ Error fetching wind farm data:', error);
                 
-                // Fallback: Versuche DOM-Extraktion
+                
                 console.log('🔄 Falling back to DOM extraction...');
                 return extractWindFarmDataFromDOM();
             }
         }
         
         function extractWindFarmDataFromDOM() {
-            // Fallback-Methode falls OData nicht funktioniert
+            
             console.log('🔍 Extracting data from DOM as fallback...');
             
-            // Windpark-Datenbank mit korrekten Koordinaten
+            
             const windFarmDatabase = {
                 1: {
                     windFarm: 'Arkona',
@@ -323,7 +323,7 @@
                 }
             };
             
-            // Extrahiere ID aus URL
+            
             const urlHash = window.location.hash;
             const idMatch = urlHash.match(/ID=(\d+)/);
             
@@ -352,7 +352,7 @@
         }
         
         function createMapButton() {
-            // Erstelle den Map-Button
+            // Erstellt den Map-Button
             const mapButton = document.createElement('div');
             mapButton.className = 'windpark-map-button';
             mapButton.innerHTML = `
@@ -397,7 +397,7 @@
             
             console.log('🗺️ Showing map for:', currentWindFarmData.windFarm);
             
-            // Erstelle Map-Container
+            // Erstellt Map-Container
             mapContainer = document.createElement('div');
             mapContainer.id = 'windpark-map-container';
             mapContainer.style.cssText = `
@@ -465,7 +465,7 @@
             // Button-Text zurücksetzen
             const button = document.querySelector('.windpark-map-button button');
             if (button) {
-                button.innerHTML = '🗺️ Karte anzeigen';
+                button.innerHTML = '🗺️ Show Map';
                 button.style.background = 'linear-gradient(135deg, #0066cc, #004499)';
             }
         }
@@ -602,7 +602,7 @@
         }
         
         function showToast(message) {
-            // Entferne vorhandene Toasts
+            
             const existingToasts = document.querySelectorAll('.windpark-toast');
             existingToasts.forEach(toast => toast.remove());
             
@@ -627,14 +627,14 @@
             
             document.body.appendChild(toast);
             
-            // Toast nach 3 Sekunden entfernen
+            
             setTimeout(() => {
                 if (toast) {
                     toast.remove();
                 }
             }, 3000);
             
-            // CSS Animation für Toast
+            
             if (!document.querySelector('#toast-animations')) {
                 const style = document.createElement('style');
                 style.id = 'toast-animations';

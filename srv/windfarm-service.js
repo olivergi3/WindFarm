@@ -15,7 +15,6 @@ async function getToken() {
         throw new Error('Missing authentication credentials');
     }
     
-    // Use Buffer.from instead of btoa for Node.js compatibility
     const credentials = Buffer.from(username + ':' + password).toString('base64');
     
     const headers = {
@@ -80,7 +79,7 @@ async function doQuery(token, query, inputCsv) {
     .catch(error => console.log(error));
 }
 
-// Silent rating calculation function - no console output
+
 function calculateOverallRating(windFarm) {
     const requiredFields = [
         'capacityFactorReal', 'windFarmEfficiency', 'windFarmRatedPowerMW', 
@@ -88,7 +87,7 @@ function calculateOverallRating(windFarm) {
         'windFarmAreaKm2', 'numberWT', 'wtRatedPowerMW'
     ];
     
-    // Check if any required field is missing
+    
     const hasAllFields = requiredFields.every(field => 
         windFarm[field] !== undefined && windFarm[field] !== null
     );
@@ -116,18 +115,18 @@ function calculateOverallRating(windFarm) {
 
 module.exports = cds.service.impl(async function() {
     
-    // Add computed overallRating after reading WindFarms
+
     this.after('READ', 'WindFarms', (results) => {
         if (Array.isArray(results)) {
             results.forEach(item => {
-                // Only calculate if CDS rating doesn't exist or is 0
+
                 if (!item.overallRating || item.overallRating === 0) {
                     const rating = calculateOverallRating(item);
                     item.overallRating = rating.overallRating;
                 }
             });
         } else if (results) {
-            // Only calculate if CDS rating doesn't exist or is 0
+
             if (!results.overallRating || results.overallRating === 0) {
                 const rating = calculateOverallRating(results);
                 results.overallRating = rating.overallRating;
@@ -135,7 +134,7 @@ module.exports = cds.service.impl(async function() {
         }
     });
 
-    // Event handler for checkAI action - Universal version
+
     this.onCheckAI = async function(req) {
         try {
             console.log('checkAI called with:', req.data);
@@ -143,7 +142,7 @@ module.exports = cds.service.impl(async function() {
             let windFarmData = [];
             let entityUsed = '';
             
-            // Versuche verschiedene Entities in der Reihenfolge der Präferenz
+
             const entityPriority = [
                 { name: 'WindFarms', ref: this.entities.WindFarms },
                 { name: 'WindFarmAnalytics', ref: this.entities.WindFarmAnalytics },
@@ -205,7 +204,7 @@ module.exports = cds.service.impl(async function() {
             let userInput = req.data.Query;
             console.log('User input:', userInput);
             
-            // Form query and send to AI endpoint
+
             try {
                 // Get authentication token
                 const bearerToken = await getToken();
@@ -245,7 +244,7 @@ module.exports = cds.service.impl(async function() {
                     status: 'error',
                     message: 'AI processing failed',
                     error: aiError.message,
-                    csv: csv, // Return CSV for debugging
+                    csv: csv, 
                     userQuery: userInput,
                     entityUsed: entityUsed
                 };

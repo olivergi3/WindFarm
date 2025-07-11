@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/test/ObjectPage"],function(t){"use strict";var n={actions:{},assertions:{}};return new t({appId:"ns.task1",componentId:"WindFarmAnalyticsObjectPage",contextPath:"/WindFarmAnalytics"},n)});
+//# sourceMappingURL=WindFarmAnalyticsObjectPage.js.map

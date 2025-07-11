@@ -242,46 +242,76 @@ service WindFarmService {
     };
 
     // value help entities with static category values
-    @readonly
+    
     entity CountryValueHelp as projection on windfarm.WindFarms {
         key country
     } group by country;
 
     // static Sea categories
-    @readonly
+    
     entity windFarmValueHelp as projection on windfarm.WindFarms {
         key windFarm
     } group by windFarm;
 
     // static Sea categories
-    @readonly
+ 
     entity waterBodyValueHelp as projection on windfarm.WindFarms {
         key waterBody
     } group by waterBody;
 
     // static capacity factor categories
-    @readonly
+   
     entity CapacityFactorCategoryValueHelp {
         key capacityFactorCategory : String;
     }
     
     // static efficiency categories  
-    @readonly
+   
     entity EfficiencyCategoryValueHelp {
         key efficiencyCategory : String;
     }
     
     // static power rating categories
-    @readonly
+    
     entity PowerRatingCategoryValueHelp {
         key powerRatingCategory : String;
     }
     
     // static density categories
-    @readonly
+   
     entity DensityCategoryValueHelp {
         key densityCategory : String;
     }
+
+    
+    entity RotorDiameterCategoryValueHelp {
+        key rotorDiameterCategory : String;
+    }
+  
+    entity NacelleHeightCategoryValueHelp {
+        key nacelleHeightCategory : String;
+    }
+    
+    entity WindFarmAreaCategoryValueHelp {
+        key windFarmAreaCategory : String;
+    }
+
+    
+    entity TurbineCountCategoryValueHelp {
+        key turbineCountCategory : String;
+    }
+   
+    entity PerformanceProfileValueHelp {
+        key performanceprofile : String;
+    }
+
+    
+    entity OptimizationPotentialValueHelp {
+        key optimizationpotential : String;
+    }
+
+    
+
 
     // analytical entity task 1
     @readonly

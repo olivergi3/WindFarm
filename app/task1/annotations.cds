@@ -11,7 +11,8 @@ annotate service.WindFarmAnalytics with {
                 LocalDataProperty : country,
                 ValueListProperty : 'country'
             }]
-        }
+        },
+        Common.Label : '{i18n>Country}',
     );
 
      // Wind Farm Value Help - references the grouped windFarm entity
@@ -35,7 +36,8 @@ annotate service.WindFarmAnalytics with {
                 LocalDataProperty : waterBody,
                 ValueListProperty : 'waterBody'
             }]
-        }
+        },
+        Common.Label : '{i18n>Sea}',
     );
 }
 
@@ -130,7 +132,7 @@ annotate service.WindFarmAnalytics with @(
     Name                 : 'totalWindFarms',
     AggregationMethod    : 'countdistinct',
     AggregatableProperty : windFarm,
-    @Common.Label        : 'Total Wind Farms'
+    @Common.Label        : '{i18n>TotalWindFarms}'
   },
   Analytics.AggregatedProperty #avgCapacityFactor : {
     Name                 : 'avgCapacityFactor',
@@ -142,7 +144,7 @@ annotate service.WindFarmAnalytics with @(
     Name                 : 'totalPower',
     AggregationMethod    : 'sum',
     AggregatableProperty : windFarmRatedPowerMW,
-    @Common.Label        : 'Total Power (MW)'
+    @Common.Label        : '{i18n>TotalPowerMw}'
   },
   Analytics.AggregatedProperty #avgEfficiency : {
     Name                 : 'avgEfficiency',
@@ -226,7 +228,7 @@ annotate service.WindFarmAnalytics with @(
 
 // Simple Chart for ALP
 annotate service.WindFarmAnalytics with @UI.Chart : {
-  Title               : 'Performance Overview',
+  Title               : '{i18n>PerformanceOverview}',
   Description         : 'Total Power by Country',
   ChartType           : #Column,
   DynamicMeasures     : [
@@ -254,10 +256,10 @@ annotate service.WindFarmAnalytics with @UI.LineItem : [
     Value          : windFarm,
     Label          : 'Wind Farm',
     @UI.Importance : #High,
-    @HTML5.CssDefaults: {width:'15em'}
+    @HTML5.CssDefaults: {width:'14em'}
   }, {
     Value          : country,
-    Label          : 'Country',
+    Label          : '{i18n>Country1}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'10em'}
   }, {
@@ -309,8 +311,8 @@ annotate service.WindFarmAnalytics with @UI.PresentationVariant : {
     numberWT
   ],
   Visualizations : [
-    '@UI.Chart',                        // Main Performance Chart 
-    '@UI.LineItem'                      // Table
+    '@UI.Chart',                         
+    '@UI.LineItem'                      
   ],
   SortOrder : [{
     Property : windFarmRatedPowerMW,
@@ -335,7 +337,7 @@ annotate service.WindFarmAnalytics with @UI : {
     ImageUrl       : windFarmImageUrl
   },
   
-  // Enhanced Header Facets - General Information moved to header
+  // Enhanced Header Facets
   HeaderFacets : [
     {
       $Type  : 'UI.ReferenceFacet',
@@ -351,7 +353,7 @@ annotate service.WindFarmAnalytics with @UI : {
     { Value : waterBody}
   ],
   
-  // Restructured Facet Structure
+  //  Facet Structure
   Facets : [
     {
       $Type  : 'UI.CollectionFacet',
@@ -393,7 +395,7 @@ annotate service.WindFarmAnalytics with @UI : {
     }
   ],
   
-  // Header Field Groups - General Information in Header (WITH TOOLTIPS)
+  // Header Field Groups - General Information (WITH TOOLTIPS)
   FieldGroup #HeaderGeneralInfo : { 
     Data : [
       { 

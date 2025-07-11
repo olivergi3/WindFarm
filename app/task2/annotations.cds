@@ -51,7 +51,7 @@ annotate service.WindFarms with @(
         }
     ],
     
-    // NEUER Data Point für Overall Rating mit JavaScript-Berechnung
+    
     UI.DataPoint #OverallRating: {
         $Type: 'UI.DataPointType',
         Value: overallRating,
@@ -102,7 +102,11 @@ annotate service.WindFarms with @(
         capacityFactorCategory,
         efficiencyCategory,
         powerRatingCategory,
-        densityCategory
+        densityCategory,
+        rotorDiameterCategory,
+        nacelleHeightCategory,
+        windFarmAreaCategory,
+        turbineCountCategory        
     ],
     
     // Enhanced Presentation variant to force all columns visible
@@ -481,4 +485,65 @@ annotate service.WindFarms with {
             ]
         }
     );
+    
+    turbineCountCategory @(
+        Common.ValueList: {
+            Label: 'Turbine Count Categories',
+            CollectionPath: 'TurbineCountCategoryValueHelp',
+            SearchSupported: true,
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: turbineCountCategory,
+                    ValueListProperty: 'turbineCountCategory'
+                }
+            ]
+        }
+    );
+    
+    rotorDiameterCategory @(
+        Common.ValueList: {
+            Label: 'Rotor Diameter Categories',
+            CollectionPath: 'RotorDiameterCategoryValueHelp',
+            SearchSupported: true,
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: rotorDiameterCategory,
+                    ValueListProperty: 'rotorDiameterCategory'
+                }
+            ]
+        }
+    );
+    
+    nacelleHeightCategory @(
+        Common.ValueList: {
+            Label: 'Nacelle Height Categories',
+            CollectionPath: 'NacelleHeightCategoryValueHelp',
+            SearchSupported: true,
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: nacelleHeightCategory,
+                    ValueListProperty: 'nacelleHeightCategory'
+                }
+            ]
+        }
+    );
+    
+    windFarmAreaCategory @(
+        Common.ValueList: {
+            Label: 'Wind Farm Area Categories',
+            CollectionPath: 'WindFarmAreaCategoryValueHelp',
+            SearchSupported: true,
+            Parameters: [
+                {
+                    $Type: 'Common.ValueListParameterInOut',
+                    LocalDataProperty: windFarmAreaCategory,
+                    ValueListProperty: 'windFarmAreaCategory'
+                }
+            ]
+        }
+    );
+
 }
