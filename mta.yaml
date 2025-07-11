@@ -103,7 +103,7 @@ modules:
         parameters:
           content-target: true
     build-parameters:
-      build-result: .
+      build-result: resources/
       requires:
         - name: windfarm-mgmt-task1
           artifacts:
