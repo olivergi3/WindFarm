@@ -11,7 +11,7 @@ annotate service.WindFarmRecommendations with {
                 ValueListProperty : 'country'
             }]
         },
-        Common.Label : '{i18n>Country1}',
+        Common.Label : '{i18n>Country}'
     );
 
      // Wind Farm Value Help - references the grouped windFarm entity
@@ -23,7 +23,8 @@ annotate service.WindFarmRecommendations with {
                 LocalDataProperty : windFarm,
                 ValueListProperty : 'windFarm'
             }]
-        }
+        },
+        Common.Label : '{i18n>WindFarm}'
     );
 
      // Sea Value Help - references the grouped sea entity
@@ -67,9 +68,16 @@ annotate service.WindFarmRecommendations with {
             ]
         }
     );
+
+    // Bessere Labels für Chart-Dimensionen
+    windFarmDensityMWKm2 @(
+        Common.Label : '{i18n>windFarmDensity}'
+    );
+    
+    efficiencyCategory @(
+        Common.Label : '{i18n>efficiencyCategory}'
+    );
 };
-
-
 
 annotate service.WindFarmRecommendations with @(
     
@@ -94,27 +102,22 @@ annotate service.WindFarmRecommendations with @(
         {
             $Type: 'UI.ReferenceFacet',
             ID: 'furtherStudyKPI',
-            Target: '@UI.DataPoint#furtherStudy',
-
+            Target: '@UI.DataPoint#furtherStudy'
         },
         {
             $Type: 'UI.ReferenceFacet',
             ID: 'PerformanceKPI',
-            Target: '@UI.DataPoint#performanceProfile',
-
+            Target: '@UI.DataPoint#performanceProfile'
         },
         {
             $Type: 'UI.ReferenceFacet', 
             ID: 'OptimizationKPI',
-            Target: '@UI.DataPoint#optimizationPotential',
+            Target: '@UI.DataPoint#optimizationPotential'
         }
     ]
 );
 
-// task 4 annotations
-
 // aggregation support
-
 annotate service.WindFarmRecommendations with @Aggregation.ApplySupported : {
     Transformations: [
         'aggregate',
@@ -135,7 +138,6 @@ annotate service.WindFarmRecommendations with @Aggregation.ApplySupported : {
         windFarmAreaCategory,
         turbineCountCategory,
         wtRatedPowerCategory,
-
         
         // physical characteristics
         rotorDiameterM,
@@ -150,12 +152,9 @@ annotate service.WindFarmRecommendations with @Aggregation.ApplySupported : {
         capacityFactorReal,
         windFarmEfficiency,
         performanceProfile,     
-        optimizationPotential, 
-
-        
+        optimizationPotential
     ],
     AggregatableProperties: [
-        // count
         { Property: capacityFactorReal },
         { Property: windFarmEfficiency }
     ]    
@@ -175,9 +174,10 @@ annotate service.WindFarmRecommendations with @(
         Name                 : 'avgEfficiencyCorr',
         AggregationMethod    : 'average',
         AggregatableProperty : 'windFarmEfficiency',
-        @Common.Label        : '{i18n>Avgefficiency}'
+        @Common.Label        : '{i18n>AvgEfficiency}'
     }
 );
+
 // ui annotations
 annotate service.WindFarmRecommendations with @(
     // selection fields filter
@@ -194,7 +194,7 @@ annotate service.WindFarmRecommendations with @(
         {
             $Type: 'UI.DataFieldForAction',
             Action: 'WindFarmService.EntityContainer/checkAI',
-            Label: '{i18n>Ask AI}'
+            Label: '{i18n>AskAI}'
         },
         {
             Value          : windFarm,
@@ -202,85 +202,81 @@ annotate service.WindFarmRecommendations with @(
             @UI.Importance : #High
         }, {
             Value          : country,
-            Label          : 'Country',
+            Label          : '{i18n>Country}',
             @UI.Importance : #High
         }, {
             Value          : waterBody,
-            Label          : 'Sea',
+            Label          : '{i18n>WaterBody}',
             @UI.Importance : #High
         }, {
             Value          : efficiencyCategory,
-            Label          : 'Efficiency Class',
+            Label          : '{i18n>EfficiencyClass}',
             Criticality: efficiencyCriticality,
             @UI.Importance : #High
         }, {
             Value          : capacityFactorCategory,
-            Label          : 'Capacity Factor Class',
+            Label          : '{i18n>CapacityFactorClass}',
             Criticality: capacityFactorCriticality,
             @UI.Importance : #High
         }, {
             Value          : powerRatingCategory,
-            Label          : 'Power Rating Class',
+            Label          : '{i18n>PowerRatingClass}',
             Criticality: powerRatingCriticality,
             @UI.Importance : #High
         }, {
             Value          : densityCategory,
-            Label          : 'Density Class',
+            Label          : '{i18n>DensityClass}',
             Criticality: densityCriticality,
             @UI.Importance : #High
         }, {
             Value          : rotorDiameterCategory,
-            Label          : 'Rotor Diameter Class',
+            Label          : '{i18n>RotorDiameterClass}',
             @UI.Importance : #High,
             Criticality: rotorDiameterCriticality
         }, {
             Value          : nacelleHeightCategory,
-            Label          : 'Nacelle Height Class',
+            Label          : '{i18n>NacelleHeightClass}',
             Criticality: nacelleHeightCriticality,
             @UI.Importance : #High
         }, {
             Value          : windFarmAreaCategory,
-            Label          : 'Wind Farm Area Class',
+            Label          : '{i18n>WindFarmAreaClass}',
             Criticality: windFarmAreaCriticality,
             @UI.Importance : #High
         }, {
             Value          : turbineCountCategory,
-            Label          : 'Turbine Count Class',
+            Label          : '{i18n>TurbineCountClass}',
             Criticality: turbineCountCriticality,
             @UI.Importance : #High
         }, {
             Value          : wtRatedPowerCategory,
-            Label          : 'WT Rated Power Class',
+            Label          : '{i18n>WTRatedPowerClass}',
             Criticality: wtRatedPowerCriticality,
             @UI.Importance : #High
-        }, 
-        // existing correlation patterns
-        {
+        }, {
             Value          : performanceProfile,   
-            Label          : 'Performance Profile',
+            Label          : '{i18n>PerformanceProfile}',
             Criticality: performanceProfileCriticality,
             @UI.Importance : #High
-        },
-        {
+        }, {
             Value          : optimizationPotential,       
-            Label          : 'Optimization Potential',
+            Label          : '{i18n>OptimizationPotential}',
             Criticality : optimizationPotentialCriticality,
             @UI.Importance : #High
-        }, 
-
+        }
     ],
 
     UI.Identification: [
         {
             $Type: 'UI.DataField',
             Value: windFarm,
-            Label: 'Wind Farm Name'
+            Label: '{i18n>WindFarmName}'
         }
     ],
 
     // Presentation Variant
     UI.PresentationVariant : {
-        Text: 'Wind Farm Recommendations Dashboard',
+        Text: '{i18n>WindFarmRecommendationsDashboard}',
         Visualizations : [
             '@UI.Chart#recommendationMain',
             '@UI.LineItem'
@@ -296,31 +292,31 @@ annotate service.WindFarmRecommendations with @(
         {
             $Type : 'UI.CollectionFacet',
             ID : 'GeneratedFacet1',
-            Label : '{i18n>General Information}',
+            Label : '{i18n>GeneralInformation}',
             Facets: [
                 {
                     $Type  : 'UI.ReferenceFacet',
                     ID     : 'PowerPerformance',
                     Target : '@UI.FieldGroup#PowerPerformance',
-                    Label  : 'Power & Efficiency'
+                    Label  : '{i18n>PowerEfficiency}'
                 },
                 {
                     $Type  : 'UI.ReferenceFacet',
                     ID     : 'CapacityFactors',
                     Target : '@UI.FieldGroup#CapacityFactors',
-                    Label  : 'Capacity Factors'
+                    Label  : '{i18n>CapacityFactors}'
                 },
                 {
                     $Type  : 'UI.ReferenceFacet',
                     ID     : 'TurbineCharacteristics',
                     Target : '@UI.FieldGroup#TurbineCharacteristics',
-                    Label  : 'Turbine Specifications'
+                    Label  : '{i18n>TurbineSpecifications}'
                 },
                 {
                     $Type  : 'UI.ReferenceFacet',
                     ID     : 'WindCharacteristics',
                     Target : '@UI.FieldGroup#WindCharacteristics',
-                    Label  : 'Wind Characteristics'
+                    Label  : '{i18n>WindCharacteristics}'
                 }
             ]
         },
@@ -333,12 +329,10 @@ annotate service.WindFarmRecommendations with @(
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'RecommendationFacet',
-            Label : '{i18n>Performance and Recommendation}',
+            Label : '{i18n>PerformanceAndRecommendation}',
             Target : '@UI.FieldGroup#Recommendation'
         }
     ],
-
-
 
     UI.FieldGroup #ClassificationGroup : {
         $Type : 'UI.FieldGroupType',
@@ -346,55 +340,55 @@ annotate service.WindFarmRecommendations with @(
             {
                 $Type : 'UI.DataField',
                 Value : capacityFactorCategory,
-                Label: '{i18n>Capacity Factor Class}',
+                Label: '{i18n>CapacityFactorClass}',
                 Criticality: capacityFactorCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : efficiencyCategory,
-                Label: '{i18n>Efficiency Class}',
+                Label: '{i18n>EfficiencyClass}',
                 Criticality: efficiencyCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : powerRatingCategory,
-                Label: '{i18n>Power Rating Class}',
+                Label: '{i18n>PowerRatingClass}',
                 Criticality: powerRatingCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : densityCategory,
-                Label: '{i18n>Density Class}',
+                Label: '{i18n>DensityClass}',
                 Criticality: densityCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorDiameterCategory,
-                Label: '{i18n>Rotor Diameter Class}',
+                Label: '{i18n>RotorDiameterClass}',
                 Criticality: rotorDiameterCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : nacelleHeightCategory,
-                Label: '{i18n>Nacelle Height Class}',
+                Label: '{i18n>NacelleHeightClass}',
                 Criticality: nacelleHeightCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmAreaCategory,
-                Label: '{i18n>Wind Farm Area Class}',
+                Label: '{i18n>WindFarmAreaClass}',
                 Criticality: windFarmAreaCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : turbineCountCategory,
-                Label: '{i18n>Turbine Count Class}',
+                Label: '{i18n>TurbineCountClass}',
                 Criticality: turbineCountCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtRatedPowerCategory,
-                Label: '{i18n>WT Rated Power Class}',
+                Label: '{i18n>WTRatedPowerClass}',
                 Criticality: wtRatedPowerCriticality
             }
         ]
@@ -406,24 +400,24 @@ annotate service.WindFarmRecommendations with @(
             { 
                 $Type : 'UI.DataField',
                 Value : windFarmRatedPowerMW, 
-                Label : 'Rated Power (MW)'
+                Label : '{i18n>RatedPowerMW}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : windFarmEfficiency, 
-                Label : 'Farm Efficiency (%)'
+                Label : '{i18n>FarmEfficiencyPercent}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : windFarmDensityMWKm2, 
-                Label : 'Power Density (MW/km²)'
+                Label : '{i18n>PowerDensityMWKm2}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : ratioCapacityFactorRealModel, 
-                Label : 'Real/Model Ratio'
+                Label : '{i18n>RealModelRatio}'
             }
-        ],
+        ]
     },
 
     UI.FieldGroup #CapacityFactors : { 
@@ -432,22 +426,22 @@ annotate service.WindFarmRecommendations with @(
             { 
                 $Type : 'UI.DataField',
                 Value : capacityFactorReal, 
-                Label : 'Real Capacity Factor (%)'
+                Label : '{i18n>RealCapacityFactorPercent}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : capacityFactorModel, 
-                Label : 'Model Capacity Factor (%)'
+                Label : '{i18n>ModelCapacityFactorPercent}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : capacityFactorInfiniteFarm, 
-                Label : 'Infinite Farm Factor (%)'
+                Label : '{i18n>InfiniteFarmFactorPercent}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : capacityFactorIsolatedTurbine, 
-                Label : 'Isolated Turbine Factor (%)'
+                Label : '{i18n>IsolatedTurbineFactorPercent}'
             }
         ]
     },
@@ -458,17 +452,17 @@ annotate service.WindFarmRecommendations with @(
             { 
                 $Type : 'UI.DataField',
                 Value : wtRatedPowerMW, 
-                Label : 'Turbine Rated Power (MW)'
+                Label : '{i18n>TurbineRatedPowerMW}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : rotorDiameterM, 
-                Label : 'Rotor Diameter (m)'
+                Label : '{i18n>RotorDiameterM}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : nacelleHeightM, 
-                Label : 'Nacelle Height (m)'
+                Label : '{i18n>NacelleHeightM}'
             }
         ]
     },
@@ -479,12 +473,12 @@ annotate service.WindFarmRecommendations with @(
             { 
                 $Type : 'UI.DataField',
                 Value : windKw, 
-                Label : 'Wind Speed (kW)'
+                Label : '{i18n>WindSpeedKW}'
             },
             { 
                 $Type : 'UI.DataField',
                 Value : windLambda, 
-                Label : 'Wind Lambda'
+                Label : '{i18n>WindLambda}'
             }
         ]
     },
@@ -495,16 +489,19 @@ annotate service.WindFarmRecommendations with @(
             {
                 $Type : 'UI.DataField',
                 Value : windFarm,
+                Label : '{i18n>WindFarm}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : country,
+                Label : '{i18n>Country}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : waterBody,
+                Label : '{i18n>WaterBody}'
             }
-        ],
+        ]
     },
 
     UI.FieldGroup #Recommendation : {
@@ -513,31 +510,29 @@ annotate service.WindFarmRecommendations with @(
             {
                 $Type : 'UI.DataField',
                 Value : performanceProfile,
-                Label: '{i18n>Performance Profile}',
+                Label: '{i18n>PerformanceProfile}',
                 Criticality: performanceProfileCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : optimizationPotential,
-                Label: '{i18n>Optimization Potential}',
+                Label: '{i18n>OptimizationPotential}',
                 Criticality: optimizationPotentialCriticality
             }
-        ],
-    },
-
-
+        ]
+    }
 );
 
 // Chart
 annotate service.WindFarmRecommendations with @(
     UI.Chart #recommendationMain : {
-        Title               : 'Recommendations and Forecasts',
+        Title               : '{i18n>Recommendations and Forecasts}',
         ChartType           : #HeatMap,
         DynamicMeasures     : [
             '@Analytics.AggregatedProperty#avgEfficiencyCorr',
-            '@Analytics.AggregatedProperty#avgCapacityFactorCorr',
+            '@Analytics.AggregatedProperty#avgCapacityFactorCorr'
         ],
-        Dimensions          : [ 'windFarm', 'windFarmDensityMWKm2', 'efficiencyCategory',],
+        Dimensions          : [ 'windFarm', 'windFarmDensityMWKm2', 'efficiencyCategory'],
         MeasureAttributes   : [
             {
                 DynamicMeasure : '@Analytics.AggregatedProperty#avgEfficiencyCorr',
@@ -548,21 +543,22 @@ annotate service.WindFarmRecommendations with @(
                 Role      : #Axis1
             }
         ],
-        DimensionAttributes : [{
-            Dimension : 'windFarm',
-            Role      : #Category
-        },
-        {
-            Dimension: 'windFarmDensityMWKm2',
-            Role     : #Category
-        },
-        {
-            Dimension: 'efficiencyCategory',
-            Role: #Category2
-        }]
-    },
+        DimensionAttributes : [
+            {
+                Dimension : 'windFarm',
+                Role      : #Category
+            },
+            {
+                Dimension: 'windFarmDensityMWKm2',
+                Role     : #Category
+            },
+            {
+                Dimension: 'efficiencyCategory',
+                Role: #Category2
+            }
+        ]
+    }
 );
-
 
 // Field-level annotations for computed fields
 annotate service.WindFarmRecommendations with {
@@ -585,46 +581,40 @@ annotate service.WindFarmRecommendations with {
     wtRatedPowerCategory @Core.Computed: true;
 };
 
-
 annotate service.WindFarmRecommendations with @(
-
-
-
     // Data Points with conditional criticality
     UI.DataPoint #CapacityFactor: {
         $Type: 'UI.DataPointType',
         Value: capacityFactorReal,
-        Title: 'Capacity Factor (%)',
+        Title: '{i18n>CapacityFactorPercent}',
         Criticality: capacityFactorCriticality
     },
     
     UI.DataPoint #Efficiency: {
         $Type: 'UI.DataPointType', 
         Value: windFarmEfficiency,
-        Title: 'Wind Farm Efficiency (%)',
+        Title: '{i18n>WindFarmEfficiencyPercent}',
         Criticality: efficiencyCriticality
     },
     
     UI.DataPoint #performanceProfile: {
         $Type: 'UI.DataPointType',
         Value: performanceProfile,
-        Title: 'Performance',
+        Title: '{i18n>Performance}',
         Criticality: performanceProfileCriticality
     },
     
     UI.DataPoint #optimizationPotential: {
         $Type: 'UI.DataPointType',
         Value: optimizationPotential,
-        Title: 'Optimization Recommendation',
+        Title: '{i18n>OptimizationRecommendation}',
         Criticality: optimizationPotentialCriticality
     },
 
     UI.DataPoint #furtherStudy: {
         $Type: 'UI.DataPointType',
         Value: furtherStudy,
-        Title: 'further Study Potential',
+        Title: '{i18n>FurtherStudyPotential}',
         Criticality: furtherStudyCriticality
     }
 );
-
-

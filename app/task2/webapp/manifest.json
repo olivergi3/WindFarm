@@ -41,8 +41,8 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "",
-      "favIcon": "",
+      "icon": "sap-icon://map-3",
+      "favIcon": "sap-icon://map-3",
       "phone": "",
       "phone@2": "",
       "tablet": "",

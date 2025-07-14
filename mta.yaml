@@ -18,7 +18,8 @@ modules:
     path: .
     parameters:
       buildpack: nodejs_buildpack
-      memory: 128M
+      memory: 256M
+      disk-quota: 2048M
     build-parameters:
       builder: npm-ci
       exclude:
@@ -37,7 +38,8 @@ modules:
     path: gen/db
     parameters:
       buildpack: nodejs_buildpack
-      memory: 128M
+      memory: 256M
+      disk-quota: 2048M
     requires:
       - name: windfarm-mgmt-db
 
@@ -45,6 +47,8 @@ modules:
   - name: windfarm-mgmt-task1
     type: html5
     path: app/task1
+    parameters:
+      disk-quota: 1024M
     build-parameters:
       builder: custom
       commands:
@@ -58,6 +62,8 @@ modules:
   - name: windfarm-mgmt-task2
     type: html5
     path: app/task2
+    parameters:
+      disk-quota: 1024M
     build-parameters:
       builder: custom
       commands:
@@ -71,6 +77,8 @@ modules:
   - name: windfarm-mgmt-task3
     type: html5
     path: app/task3
+    parameters:
+      disk-quota: 1024M
     build-parameters:
       builder: custom
       commands:
@@ -84,6 +92,8 @@ modules:
   - name: windfarm-mgmt-task4
     type: html5
     path: app/task4
+    parameters:
+      disk-quota: 1024M
     build-parameters:
       builder: custom
       commands:
@@ -97,6 +107,10 @@ modules:
   - name: windfarm-mgmt-portal-content-deployer
     type: com.sap.application.content
     path: portal-content
+    parameters:
+      memory: 512M
+      disk-quota: 4096M
+      buildpack: nodejs_buildpack
     requires:
       - name: windfarm-mgmt-portal
         parameters:
@@ -113,6 +127,10 @@ modules:
   - name: windfarm-mgmt-ui-resources
     type: com.sap.application.content
     path: gen/ui-resources
+    parameters:
+      memory: 512M
+      disk-quota: 4096M
+      buildpack: nodejs_buildpack
     requires:
       - name: windfarm-mgmt-html5-repo-host
         parameters:
@@ -142,7 +160,9 @@ modules:
     type: nodejs
     path: packages/deploy-int/approuter
     parameters:
-      memory: 128M
+      memory: 256M
+      disk-quota: 2048M
+      buildpack: nodejs_buildpack
     requires:
       - name: windfarm-mgmt-auth
       - name: windfarm-mgmt-html5-repo-runtime
