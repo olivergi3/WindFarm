@@ -259,7 +259,7 @@ annotate service.WindFarmAnalytics with @UI.LineItem : [
     @HTML5.CssDefaults: {width:'14em'}
   }, {
     Value          : country,
-    Label          : '{i18n>Country1}',
+    Label          : '{i18n>Country}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'10em'}
   }, {

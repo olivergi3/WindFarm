@@ -168,14 +168,14 @@ annotate service.WindFarmRecommendations with @(
         Name                 : 'avgCapacityFactorCorr',
         AggregationMethod    : 'average',
         AggregatableProperty : 'capacityFactorReal',
-        @Common.Label        : 'Avg Capacity Factor (%) '
+        @Common.Label        : '{i18n>AvgCapacityFactor}'
     },
     Analytics.AggregatedProperty #avgEfficiencyCorr :
     {
         Name                 : 'avgEfficiencyCorr',
         AggregationMethod    : 'average',
         AggregatableProperty : 'windFarmEfficiency',
-        @Common.Label        : 'Avg Efficiency (%) '
+        @Common.Label        : '{i18n>Avgefficiency}'
     }
 );
 // ui annotations
@@ -198,7 +198,7 @@ annotate service.WindFarmRecommendations with @(
         },
         {
             Value          : windFarm,
-            Label          : 'Wind Farm',
+            Label          : '{i18n>WindFarm}',
             @UI.Importance : #High
         }, {
             Value          : country,

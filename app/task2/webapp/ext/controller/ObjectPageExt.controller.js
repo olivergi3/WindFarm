@@ -10,9 +10,10 @@ sap.ui.define([
             onInit: function () {
                 console.log("🗺️ MAP: Extension loaded - Button Mode");
                 
-                // Cleanup existing buttons first
-                this._cleanupMapButton();
+                // Setup global listener first
+                this._setupGlobalRouteListener();
                 
+                // Then try to add button
                 setTimeout(() => {
                     this._addMapButton();
                 }, 2000);
@@ -136,7 +137,7 @@ sap.ui.define([
                 // Create map button - dauerhaft unten rechts
                 const mapButton = document.createElement('button');
                 mapButton.className = 'wind-farm-map-button';
-                mapButton.innerHTML = '🗺️ Show Location & Weather';
+                mapButton.innerHTML = '🗺️ Show Map';
                 mapButton.style.cssText = `
                     position: fixed;
                     bottom: 20px;
@@ -173,9 +174,6 @@ sap.ui.define([
                 // Add to page with cleanup on route change
                 document.body.appendChild(mapButton);
 
-                // Listen for route changes to cleanup button
-                this._setupRouteChangeListener();
-
                 console.log("🗺️ MAP: Map button created successfully!");
                 
                 return true;
@@ -186,30 +184,148 @@ sap.ui.define([
             }
         },
 
-        _setupRouteChangeListener: function() {
-            // Listen for hash changes (route changes)
-            const handleRouteChange = () => {
-                console.log("🗺️ MAP: Route changed, checking if still on WindFarms page");
-                
-                // Check if we're still on a WindFarms detail page
+        _setupGlobalRouteListener: function() {
+            // Check if global listener already exists
+            if (window.windFarmMapGlobalListener) {
+                console.log("🗺️ MAP: Global listener already exists");
+                return;
+            }
+
+            console.log("🗺️ MAP: Setting up global route listener");
+
+            const globalHandler = () => {
                 const currentHash = window.location.hash;
-                console.log("🗺️ MAP: Current hash:", currentHash);
+                console.log("🗺️ MAP: Global route change:", currentHash);
                 
-                // Only cleanup if we're NOT on a WindFarms detail page
-                if (!currentHash.includes('WindFarms(') && !currentHash.includes('/WindFarms')) {
-                    console.log("🗺️ MAP: Left WindFarms page, cleaning up button");
-                    this._cleanupMapButton();
+                if (currentHash.includes('WindFarms(')) {
+                    // We're on a WindFarms detail page
+                    console.log("🗺️ MAP: On WindFarms page, checking button");
                     
-                    // Remove listener
-                    window.removeEventListener('hashchange', handleRouteChange);
-                } else {
-                    console.log("🗺️ MAP: Still on WindFarms page, keeping button");
+                    setTimeout(() => {
+                        const existingButton = document.querySelector('.wind-farm-map-button');
+                        if (!existingButton) {
+                            console.log("🗺️ MAP: No button found, trying to create one");
+                            // Try to create button with current page context
+                            this._createButtonForCurrentPage();
+                        } else {
+                            console.log("🗺️ MAP: Button already exists");
+                        }
+                    }, 1500);
+                    
+                } else if (!currentHash.includes('/WindFarms')) {
+                    // We've left WindFarms entirely
+                    console.log("🗺️ MAP: Left WindFarms area, cleaning up");
+                    const existingButton = document.querySelector('.wind-farm-map-button');
+                    const existingModal = document.querySelector('.wind-farm-map-modal');
+                    
+                    if (existingButton) existingButton.remove();
+                    if (existingModal) existingModal.remove();
                 }
             };
             
-            // Store listener reference for cleanup
-            this._routeChangeListener = handleRouteChange;
-            window.addEventListener('hashchange', handleRouteChange);
+            // Store globally so it persists across extension reloads
+            window.windFarmMapGlobalListener = globalHandler;
+            window.addEventListener('hashchange', globalHandler);
+        },
+
+        _createButtonForCurrentPage: function() {
+            console.log("🗺️ MAP: Creating button for current page");
+            
+            let attempts = 0;
+            const maxAttempts = 10;
+            
+            const tryCreate = () => {
+                attempts++;
+                console.log(`🗺️ MAP: Current page button attempt ${attempts}/${maxAttempts}`);
+                
+                // Try to find any available SAP UI5 view with WindFarm data
+                const views = sap.ui.getCore().byId ? 
+                    Object.keys(sap.ui.getCore().mElements || {})
+                        .map(id => sap.ui.getCore().byId(id))
+                        .filter(element => element && element.getMetadata && 
+                               element.getMetadata().getName().includes('View')) : [];
+                
+                let windFarmData = null;
+                
+                for (let view of views) {
+                    try {
+                        const context = view.getBindingContext && view.getBindingContext();
+                        if (context) {
+                            const data = context.getObject();
+                            if (data && data.latitude && data.longitude && data.windFarm) {
+                                console.log("🗺️ MAP: Found WindFarm data:", data.windFarm);
+                                windFarmData = data;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        // Continue searching
+                    }
+                }
+                
+                if (windFarmData) {
+                    this._createButtonWithData(windFarmData);
+                    return true;
+                } else if (attempts < maxAttempts) {
+                    setTimeout(tryCreate, 1000);
+                } else {
+                    console.log("🗺️ MAP: Could not find WindFarm data for button");
+                }
+            };
+            
+            tryCreate();
+        },
+
+        _createButtonWithData: function(windFarmData) {
+            console.log("🗺️ MAP: Creating button with data:", windFarmData.windFarm);
+            
+            // Remove existing button
+            const existingButton = document.querySelector('.wind-farm-map-button');
+            if (existingButton) {
+                existingButton.remove();
+            }
+            
+            // Create new button
+            const mapButton = document.createElement('button');
+            mapButton.className = 'wind-farm-map-button';
+            mapButton.innerHTML = '🗺️ Show Location & Weather';
+            mapButton.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #0070f3 0%, #0056b3 100%);
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 600;
+                box-shadow: 0 4px 15px rgba(0,112,243,0.3);
+                z-index: 1000;
+                transition: all 0.3s ease;
+                white-space: nowrap;
+            `;
+
+            // Hover effects
+            mapButton.onmouseover = () => {
+                mapButton.style.transform = 'translateY(-5px) scale(1.05)';
+                mapButton.style.boxShadow = '0 6px 20px rgba(0,112,243,0.4)';
+            };
+            mapButton.onmouseout = () => {
+                mapButton.style.transform = 'translateY(0)';
+                mapButton.style.boxShadow = '0 4px 15px rgba(0,112,243,0.3)';
+            };
+
+            // Click handler with stored data
+            mapButton.onclick = () => {
+                this._openMapModal(windFarmData);
+            };
+
+            // Add to page
+            document.body.appendChild(mapButton);
+            
+            console.log("🗺️ MAP: Button created successfully for:", windFarmData.windFarm);
         },
 
         _openMapModal: function(oData) {
