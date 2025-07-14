@@ -41,7 +41,7 @@
   "sap.ui": {
     "technology": "UI5",
     "icons": {
-      "icon": "sap-icon://energy-saving-lightbulb",
+      "icon": "",
       "favIcon": "",
       "phone": "",
       "phone@2": "",
@@ -118,7 +118,7 @@
             "settings": {
               "contextPath": "/WindFarmCorrelationAnalysis",
               "variantManagement": "Page",
-              "initialLoad": "Enabled",
+              "initialLoad": true,
               "navigation": {
                 "WindFarmCorrelationAnalysis": {
                   "detail": {

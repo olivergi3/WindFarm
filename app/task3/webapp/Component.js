@@ -3,7 +3,7 @@ sap.ui.define(
     function (Component) {
         "use strict";
 
-        return Component.extend("ns.task3.Component", {
+        return Component.extend("windfarm_mgmt_task3.Component", {
             metadata: {
                 manifest: "json"
             }

@@ -15,4 +15,4 @@ File or Folder | Purpose
 `db/` |  domain models and data of the project
 `srv/` | service models and code of the project
 `package.json` | project metadata and configuration
-`readme.md` | generel information about the project
+`readme.md` | general information about the project
