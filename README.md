@@ -1,25 +1,18 @@
 # Getting Started
 
-Welcome to your new project.
-
+Welcome to our WindFarm project.
+ 
 It contains these folders and files, following our recommended project layout:
-
+ 
 File or Folder | Purpose
 ---------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
+`app/` | containing the launchpage and the 4 different tasks
+  `task1/` | Data Visualization (Aggregation): Provides an aggregated view of wind farm performance and  environmental factors
+  `task2/` | Classification Tool: The analysis tool offers the possibility to classify wind farms according to different attributes
+  `task3/` | Association Tool: This analysis tool is capable of detecting and visualizing correlations in the wind farms
+  `task4/` | Forecast/Recommendation Tool: derive and visualize insights or potential recommendations related to wind farm characteristics and performance
+  `launchpage.html` | the launchpage
+`db/` |  domain models and data of the project
+`srv/` | service models and code of the project
 `package.json` | project metadata and configuration
-`readme.md` | this getting started guide
-
-
-## Next Steps
-
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start adding content, for example, a [db/schema.cds](db/schema.cds).
-
-
-## Learn More
-
-Learn more at https://cap.cloud.sap/docs/get-started/.
+`readme.md` | generel information about the project

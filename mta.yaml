@@ -94,6 +94,21 @@ modules:
       supported-platforms: []
       build-result: ../../gen/app/task4
 
+  - name: windfarm-mgmt-portal-content-deployer
+    type: com.sap.application.content
+    path: portal-content
+    requires:
+      - name: windfarm-mgmt-portal
+        parameters:
+          content-target: true
+          service-key:
+            name: windfarm-portal-deploy-key
+            config:
+              content-endpoint: developer
+      - name: windfarm-mgmt-auth
+      - name: windfarm-mgmt-html5-repo-host
+      - name: windfarm-mgmt-ui-resources
+
   # UI Resources deployment module - KORRIGIERT
   - name: windfarm-mgmt-ui-resources
     type: com.sap.application.content
@@ -136,7 +151,7 @@ modules:
         group: destinations
         properties:
           forwardAuthToken: true
-          strictSSL: true
+          strictSSL: false
           name: srv-api
           url: '~{srv-url}'
 

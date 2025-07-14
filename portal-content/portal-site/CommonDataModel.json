@@ -28,23 +28,23 @@
 			"payload": {
 				"viz": [
 					{
-						"id": "ns.task1.display",
-						"appId": "ns.task1",
+						"id": "windfarm_mgmt_task1.display",
+						"appId": "windfarm_mgmt_task1",
 						"vizId": "WindFarmAnalytics-display"
 					},
 					{
-						"id": "ns.task2.display",
-						"appId": "ns.task2",
+						"id": "windfarm_mgmt_task2.display",
+						"appId": "windfarm_mgmt_task2",
 						"vizId": "WindFarms-display"
 					},
 					{
-						"id": "ns.task3.extended.display",
-						"appId": "ns.task3.extended",
+						"id": "windfarm_mgmt_task3.display",
+						"appId": "windfarm_mgmt_task3",
 						"vizId": "WindFarmCorrelationAnalysis-display"
 					},
 					{
-						"id": "ns.task4.display",
-						"appId": "ns.task4",
+						"id": "windfarm_mgmt_task4.display",
+						"appId": "windfarm_mgmt_task4",
 						"vizId": "WindFarmRecommendations-display"
 					}
 				]
