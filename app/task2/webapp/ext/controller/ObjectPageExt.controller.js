@@ -16,7 +16,7 @@ sap.ui.define([
                 // Then try to add button
                 setTimeout(() => {
                     this._addMapButton();
-                }, 2000);
+                }, 1000);
             },
             
             onExit: function() {
