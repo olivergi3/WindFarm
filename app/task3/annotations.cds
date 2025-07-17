@@ -10,7 +10,8 @@ annotate service.WindFarmCorrelationAnalysis with {
                 LocalDataProperty : country,
                 ValueListProperty : 'country'
             }]
-        }
+        },
+        Common.Label : '{i18n>Country1}',
     );
 
      // Wind Farm Value Help - references the grouped windFarm entity
@@ -22,7 +23,8 @@ annotate service.WindFarmCorrelationAnalysis with {
                 LocalDataProperty : windFarm,
                 ValueListProperty : 'windFarm'
             }]
-        }
+        },
+        Common.Label : '{i18n>WindFarmName}',
     );
 
      // Sea Value Help - references the grouped sea entity
@@ -34,7 +36,8 @@ annotate service.WindFarmCorrelationAnalysis with {
                 LocalDataProperty : waterBody,
                 ValueListProperty : 'waterBody'
             }]
-        }
+        },
+        Common.Label : '{i18n>Sea}',
     );
 }
 
@@ -126,14 +129,14 @@ annotate service.WindFarmCorrelationAnalysis with @(
         Name                 : 'totalWindFarmsCorr',
         AggregationMethod    : 'countdistinct',
         AggregatableProperty : 'windFarm',
-        @Common.Label        : 'Total Wind Farms'
+        @Common.Label        : '{i18n>TotalWindFarms}'
     },
     Analytics.AggregatedProperty #countWindFarmsCorr :
     {
         Name                 : 'countWindFarmsCorr',
         AggregationMethod    : 'countdistinct',
         AggregatableProperty : 'windFarm',
-        @Common.Label        : 'Count of Wind Farms'
+        @Common.Label        : '{i18n>CountOfWindFarms}'
     },
 
     // physical characteristics aggregations (PPC = Physical Performance Characteristic)
@@ -142,42 +145,42 @@ annotate service.WindFarmCorrelationAnalysis with @(
         Name                 : 'avgRotorDiameter',
         AggregationMethod    : 'average',
         AggregatableProperty : 'rotorDiameterM',
-        @Common.Label        : 'Avg Rotor Diameter (m) (PPC)'
+        @Common.Label        : '{i18n>AvgRotorDiameterM}'
     },
     Analytics.AggregatedProperty #avgNacelleHeight :
     {
         Name                 : 'avgNacelleHeight',
         AggregationMethod    : 'average',
         AggregatableProperty : 'nacelleHeightM',
-        @Common.Label        : 'Avg Nacelle Height (m) (PPC)'
+        @Common.Label        : '{i18n>AvgNacelleHeightM}'
     },
     Analytics.AggregatedProperty #avgTurbinePower :
     {
         Name                 : 'avgTurbinePower',
         AggregationMethod    : 'average',
         AggregatableProperty : 'wtRatedPowerMW',
-        @Common.Label        : 'Avg Turbine Power (MW) (PPC)'
+        @Common.Label        : '{i18n>AvgTurbinePowerMw}'
     },
     Analytics.AggregatedProperty #totalTurbines :
     {
         Name                 : 'totalTurbines',
         AggregationMethod    : 'sum',
         AggregatableProperty : 'numberWT',
-        @Common.Label        : 'Total Turbines (PPC)'
+        @Common.Label        : '{i18n>TotalTurbinesPpc}'
     },
     Analytics.AggregatedProperty #totalArea :
     {
         Name                 : 'totalArea',
         AggregationMethod    : 'sum',
         AggregatableProperty : 'windFarmAreaKm2',
-        @Common.Label        : 'Total Area (km²) (PPC)'
+        @Common.Label        : '{i18n>TotalAreaKmPpc}'
     },
     Analytics.AggregatedProperty #avgDensity :
     {
         Name                 : 'avgDensity',
         AggregationMethod    : 'average',
         AggregatableProperty : 'windFarmDensityMWKm2',
-        @Common.Label        : 'Avg Density (MW/km²) (PPC)'
+        @Common.Label        : '{i18n>AvgDensityMwkmPpc}'
     },
 
     // operational performance aggregations (OPC = Operational Performance Characteristic)
@@ -186,21 +189,21 @@ annotate service.WindFarmCorrelationAnalysis with @(
         Name                 : 'avgCapacityFactorCorr',
         AggregationMethod    : 'average',
         AggregatableProperty : 'capacityFactorReal',
-        @Common.Label        : 'Avg Capacity Factor (%) (OPC)'
+        @Common.Label        : '{i18n>AvgCapacityFactor1}'
     },
     Analytics.AggregatedProperty #totalPowerCorr :
     {
         Name                 : 'totalPowerCorr',
         AggregationMethod    : 'sum',
         AggregatableProperty : 'windFarmRatedPowerMW',
-        @Common.Label        : 'Total Power (MW) (OPC)'
+        @Common.Label        : '{i18n>TotalPowerMwOpc}'
     },
     Analytics.AggregatedProperty #avgEfficiencyCorr :
     {
         Name                 : 'avgEfficiencyCorr',
         AggregationMethod    : 'average',
         AggregatableProperty : 'windFarmEfficiency',
-        @Common.Label        : 'Avg Efficiency (%) (OPC)'
+        @Common.Label        : '{i18n>AvgEfficiencyOpc}'
     }
 );
 
@@ -218,61 +221,61 @@ annotate service.WindFarmCorrelationAnalysis with @(
         {
             $Type: 'UI.DataFieldForAction',
             Action: 'WindFarmService.EntityContainer/checkAI',
-            Label: '{i18n>Ask AI}'
+            Label: '{i18n>Askai}'
         },
         {
             Value          : windFarm,
-            Label          : 'Wind Farm',
+            Label          : '{i18n>WindFarm}',
             @UI.Importance : #High
         }, {
             Value          : country,
-            Label          : 'Country',
+            Label          : '{i18n>Country1}',
             @UI.Importance : #High
         }, {
             Value          : waterBody,
-            Label          : 'Sea',
+            Label          : '{i18n>Sea}',
             @UI.Importance : #High
         }, 
         // efficiency correlation patterns
         {
             Value          : heightEfficiencyProfile,
-            Label          : 'Height-Efficiency Pattern',
+            Label          : '{i18n>HeightefficiencyPattern}',
             @UI.Importance : #Medium,
             Criticality    : heightEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : areaEfficiencyProfile,
-            Label          : 'Area-Efficiency Pattern',
+            Label          : '{i18n>AreaefficiencyPattern}',
             @UI.Importance : #Medium,
             Criticality    : areaEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : rotorEfficiencyProfile,
-            Label          : 'Rotor-Efficiency Pattern',
+            Label          : '{i18n>RotorefficiencyPattern}',
             @UI.Importance : #Medium,
             Criticality    : rotorEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : turbineCountEfficiencyProfile,
-            Label          : 'Turbine Count-Efficiency Pattern',
+            Label          : '{i18n>TurbineCountefficiencyPattern}',
             @UI.Importance : #Medium,
             Criticality    : turbineCountEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : wtPowerEfficiencyProfile,
-            Label          : 'WT Power-Efficiency Pattern',
+            Label          : '{i18n>WtPowerefficiencyPattern}',
             @UI.Importance : #Medium,
             Criticality    : wtPowerEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : farmPowerEfficiencyProfile,
-            Label          : 'Farm Power-Efficiency Pattern',
+            Label          : '{i18n>FarmPowerefficiencyPattern}',
             @UI.Importance : #Medium,
             Criticality    : farmPowerEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : densityEfficiencyProfile,
-            Label          : 'Density-Efficiency Pattern',
+            Label          : '{i18n>DensityefficiencyPattern}',
             @UI.Importance : #High,
             Criticality    : densityEfficiencyCriticality,
             CriticalityRepresentation: #WithoutIcon
@@ -280,43 +283,43 @@ annotate service.WindFarmCorrelationAnalysis with @(
         // capacity factor correlation patterns
         {
             Value          : turbineCountCapacityProfile,
-            Label          : 'Turbine Count-Capacity Pattern',
+            Label          : '{i18n>TurbineCountcapacityPattern}',
             @UI.Importance : #Medium,
             Criticality    : turbineCountCapacityCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : rotorCapacityProfile,
-            Label          : 'Rotor-Capacity Pattern',
+            Label          : '{i18n>RotorcapacityPattern}',
             @UI.Importance : #Medium,
             Criticality    : rotorCapacityCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : heightCapacityProfile,
-            Label          : 'Height-Capacity Pattern',
+            Label          : '{i18n>HeightcapacityPattern}',
             @UI.Importance : #Medium,
             Criticality    : heightCapacityCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : farmPowerCapacityProfile,
-            Label          : 'Farm Power-Capacity Pattern',
+            Label          : '{i18n>FarmPowercapacityPattern}',
             @UI.Importance : #Medium,
             Criticality    : farmPowerCapacityCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : wtPowerCapacityProfile,
-            Label          : 'WT Power-Capacity Pattern',
+            Label          : '{i18n>WtPowercapacityPattern}',
             @UI.Importance : #Medium,
             Criticality    : wtPowerCapacityCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : areaCapacityProfile,
-            Label          : 'Area-Capacity Pattern',
+            Label          : '{i18n>AreacapacityPattern}',
             @UI.Importance : #Medium,
             Criticality    : areaCapacityCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : capacityDensityProfile,
-            Label          : 'Capacity-Density Pattern',
+            Label          : '{i18n>CapacitydensityPattern}',
             @UI.Importance : #Medium,
             Criticality    : capacityDensityCriticality,
             CriticalityRepresentation: #WithoutIcon
@@ -324,37 +327,37 @@ annotate service.WindFarmCorrelationAnalysis with @(
         // rated power correlation patterns
         {
             Value          : densityRatedPowerProfile,
-            Label          : 'Density-Rated Power Pattern',
+            Label          : '{i18n>DensityratedPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : densityRatedPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : turbineCountRatedPowerProfile,
-            Label          : 'Turbine Count-Rated Power Pattern',
+            Label          : '{i18n>TurbineCountratedPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : turbineCountRatedPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : rotorRatedPowerProfile,
-            Label          : 'Rotor-Rated Power Pattern',
+            Label          : '{i18n>RotorratedPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : rotorRatedPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : heightRatedPowerProfile,
-            Label          : 'Height-Rated Power Pattern',
+            Label          : '{i18n>HeightratedPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : heightRatedPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : wtRatedPowerProfile,
-            Label          : 'WT-Rated Power Pattern',
+            Label          : '{i18n>WtratedPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : wtRatedPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : areaRatedPowerProfile,
-            Label          : 'Area-Rated Power Pattern',
+            Label          : '{i18n>ArearatedPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : areaRatedPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
@@ -362,31 +365,31 @@ annotate service.WindFarmCorrelationAnalysis with @(
         // wt power correlation patterns
         {
             Value          : densityWtPowerProfile,
-            Label          : 'Density-WT Power Pattern',
+            Label          : '{i18n>DensitywtPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : densityWtPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : turbineCountWtPowerProfile,
-            Label          : 'Turbine Count-WT Power Pattern',
+            Label          : '{i18n>TurbineCountwtPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : turbineCountWtPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : rotorWtPowerProfile,
-            Label          : 'Rotor-WT Power Pattern',
+            Label          : '{i18n>RotorwtPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : rotorWtPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : heightWtPowerProfile,
-            Label          : 'Height-WT Power Pattern',
+            Label          : '{i18n>HeightwtPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : heightWtPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
         }, {
             Value          : areaWtPowerProfile,
-            Label          : 'Area-WT Power Pattern',
+            Label          : '{i18n>AreawtPowerPattern}',
             @UI.Importance : #Medium,
             Criticality    : areaWtPowerCriticality,
             CriticalityRepresentation: #WithoutIcon
@@ -407,31 +410,31 @@ annotate service.WindFarmCorrelationAnalysis with @(
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'GeneralInfoFacet',
-            Label : 'General Information',
+            Label : '{i18n>GeneralInformation}',
             Target : '@UI.FieldGroup#GeneralInfo',
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'EfficiencyCorrelationFacet',
-            Label : 'Efficiency Correlation Patterns',
+            Label : '{i18n>EfficiencyCorrelationPatterns}',
             Target : '@UI.FieldGroup#EfficiencyCorrelations',
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'CapacityFactorCorrelationFacet',
-            Label : 'Capacity Factor Correlation Patterns',
+            Label : '{i18n>CapacityFactorCorrelationPatterns}',
             Target : '@UI.FieldGroup#CapacityFactorCorrelations',
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'RatedPowerCorrelationFacet',
-            Label : 'Rated Power Correlation Patterns',
+            Label : '{i18n>RatedPowerCorrelationPatterns}',
             Target : '@UI.FieldGroup#RatedPowerCorrelations',
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'WtPowerCorrelationFacet',
-            Label : 'WT Power Correlation Patterns',
+            Label : '{i18n>WtPowerCorrelationPatterns}',
             Target : '@UI.FieldGroup#WtPowerCorrelations',
         },
     ],
@@ -443,44 +446,53 @@ annotate service.WindFarmCorrelationAnalysis with @(
             {
                 $Type : 'UI.DataField',
                 Value : windFarmRatedPowerMW,
+                Label : '{i18n>WindFarmRatedPower}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmDensityMWKm2,
                 Criticality : windFarmDensityCriticality,
-                CriticalityRepresentation: #WithoutIcon
+                CriticalityRepresentation: #WithoutIcon,
+                Label : '{i18n>WindFarmDensityMwkm}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : capacityFactorReal,
                 Criticality : capacityFactorCriticality,
-                CriticalityRepresentation: #WithoutIcon
+                CriticalityRepresentation: #WithoutIcon,
+                Label : '{i18n>CapacityFactorReal}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmEfficiency,
                 Criticality : windFarmEfficiencyCriticality,
-                CriticalityRepresentation: #WithoutIcon
+                CriticalityRepresentation: #WithoutIcon,
+                Label : '{i18n>WindFarmEfficiency}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : numberWT,
+                Label : '{i18n>NumberOfWindTurbines}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorDiameterM,
+                Label : '{i18n>RotorDiameterM}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : nacelleHeightM,
+                Label : '{i18n>NacelleHeightM}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtRatedPowerMW,
+                Label : '{i18n>WtRatedPowerMw}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmAreaKm2,
+                Label : '{i18n>WindFarmAreaKm}',
             }
         ],
     },
@@ -491,14 +503,17 @@ annotate service.WindFarmCorrelationAnalysis with @(
             {
                 $Type : 'UI.DataField',
                 Value : windFarm,
+                Label : '{i18n>WindFarmName}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : country,
+                Label : '{i18n>Country1}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : waterBody,
+                Label : '{i18n>Sea}',
             }
         ],
     },
@@ -509,49 +524,49 @@ annotate service.WindFarmCorrelationAnalysis with @(
             {
                 $Type : 'UI.DataField',
                 Value : densityEfficiencyProfile,
-                Label: 'Density-Efficiency Pattern',
+                Label: '{i18n>DensityefficiencyPattern}',
                 Criticality : densityEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : heightEfficiencyProfile,
-                Label: 'Height-Efficiency Pattern',
+                Label: '{i18n>HeightefficiencyPattern}',
                 Criticality : heightEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : areaEfficiencyProfile,
-                Label: 'Area-Efficiency Pattern',
+                Label: '{i18n>AreaefficiencyPattern}',
                 Criticality : areaEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorEfficiencyProfile,
-                Label: 'Rotor-Efficiency Pattern',
+                Label: '{i18n>RotorefficiencyPattern}',
                 Criticality : rotorEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : turbineCountEfficiencyProfile,
-                Label: 'Turbine Count-Efficiency Pattern',
+                Label: '{i18n>TurbineCountefficiencyPattern}',
                 Criticality : turbineCountEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtPowerEfficiencyProfile,
-                Label: 'WT Power-Efficiency Pattern',
+                Label: '{i18n>WtPowerefficiencyPattern}',
                 Criticality : wtPowerEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : farmPowerEfficiencyProfile,
-                Label: 'Farm Power-Efficiency Pattern',
+                Label: '{i18n>FarmPowerefficiencyPattern}',
                 Criticality : farmPowerEfficiencyCriticality,
                 CriticalityRepresentation: #WithoutIcon
             }
@@ -564,49 +579,49 @@ annotate service.WindFarmCorrelationAnalysis with @(
             {
                 $Type : 'UI.DataField',
                 Value : capacityDensityProfile,
-                Label: 'Capacity-Density Pattern',
+                Label: '{i18n>CapacitydensityPattern}',
                 Criticality : capacityDensityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : turbineCountCapacityProfile,
-                Label: 'Turbine Count-Capacity Pattern',
+                Label: '{i18n>TurbineCountcapacityPattern}',
                 Criticality : turbineCountCapacityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorCapacityProfile,
-                Label: 'Rotor-Capacity Pattern',
+                Label: '{i18n>RotorcapacityPattern}',
                 Criticality : rotorCapacityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : heightCapacityProfile,
-                Label: 'Height-Capacity Pattern',
+                Label: '{i18n>HeightcapacityPattern}',
                 Criticality : heightCapacityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : farmPowerCapacityProfile,
-                Label: 'Farm Power-Capacity Pattern',
+                Label: '{i18n>FarmPowercapacityPattern}',
                 Criticality : farmPowerCapacityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtPowerCapacityProfile,
-                Label: 'WT Power-Capacity Pattern',
+                Label: '{i18n>WtPowercapacityPattern}',
                 Criticality : wtPowerCapacityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : areaCapacityProfile,
-                Label: 'Area-Capacity Pattern',
+                Label: '{i18n>AreacapacityPattern}',
                 Criticality : areaCapacityCriticality,
                 CriticalityRepresentation: #WithoutIcon
             }
@@ -619,42 +634,42 @@ annotate service.WindFarmCorrelationAnalysis with @(
             {
                 $Type : 'UI.DataField',
                 Value : densityRatedPowerProfile,
-                Label: 'Density-Rated Power Pattern',
+                Label: '{i18n>DensityratedPowerPattern}',
                 Criticality : densityRatedPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : turbineCountRatedPowerProfile,
-                Label: 'Turbine Count-Rated Power Pattern',
+                Label: '{i18n>TurbineCountratedPowerPattern}',
                 Criticality : turbineCountRatedPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorRatedPowerProfile,
-                Label: 'Rotor-Rated Power Pattern',
+                Label: '{i18n>RotorratedPowerPattern}',
                 Criticality : rotorRatedPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : heightRatedPowerProfile,
-                Label: 'Height-Rated Power Pattern',
+                Label: '{i18n>HeightratedPowerPattern}',
                 Criticality : heightRatedPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtRatedPowerProfile,
-                Label: 'WT-Rated Power Pattern',
+                Label: '{i18n>WtratedPowerPattern}',
                 Criticality : wtRatedPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : areaRatedPowerProfile,
-                Label: 'Area-Rated Power Pattern',
+                Label: '{i18n>ArearatedPowerPattern}',
                 Criticality : areaRatedPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             }
@@ -667,35 +682,35 @@ annotate service.WindFarmCorrelationAnalysis with @(
             {
                 $Type : 'UI.DataField',
                 Value : densityWtPowerProfile,
-                Label: 'Density-WT Power Pattern',
+                Label: '{i18n>DensitywtPowerPattern}',
                 Criticality : densityWtPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : turbineCountWtPowerProfile,
-                Label: 'Turbine Count-WT Power Pattern',
+                Label: '{i18n>TurbineCountwtPowerPattern}',
                 Criticality : turbineCountWtPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorWtPowerProfile,
-                Label: 'Rotor-WT Power Pattern',
+                Label: '{i18n>RotorwtPowerPattern}',
                 Criticality : rotorWtPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : heightWtPowerProfile,
-                Label: 'Height-WT Power Pattern',
+                Label: '{i18n>HeightwtPowerPattern}',
                 Criticality : heightWtPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             },
             {
                 $Type : 'UI.DataField',
                 Value : areaWtPowerProfile,
-                Label: 'Area-WT Power Pattern',
+                Label: '{i18n>AreawtPowerPattern}',
                 Criticality : areaWtPowerCriticality,
                 CriticalityRepresentation: #WithoutIcon
             }
@@ -706,7 +721,7 @@ annotate service.WindFarmCorrelationAnalysis with @(
 // Chart
 annotate service.WindFarmCorrelationAnalysis with @(
     UI.Chart #corrMain : {
-        Title               : 'Physical vs Operational Analysis',
+        Title               : '{i18n>PhysicalVsOperationalAnalysis}',
         ChartType           : #ColumnDual,
         DynamicMeasures     : [
             '@Analytics.AggregatedProperty#avgDensity',
@@ -734,10 +749,10 @@ annotate service.WindFarmCorrelationAnalysis with @(
 // Header Info for Object Page
 annotate service.WindFarmCorrelationAnalysis with @UI : {
     HeaderInfo : {
-        TypeName       : 'Wind Farm Extended Correlation Analysis',
-        TypeNamePlural : 'Wind Farm Extended Correlation Analysis Dashboard',
+        TypeName       : '{i18n>WindFarmExtendedCorrelation}',
+        TypeNamePlural : '{i18n>WindFarmExtendedCorrelation1}',
         Title          : { Value : 'Wind Farm Correlation Analysis' },
-        Description    : { Value : 'Comprehensive Performance Pattern Analysis with Correlation Patterns' },
+        Description    : { Value : '{i18n>ComprehensivePerformancePatternAnalysis}' },
         ImageUrl       : windFarmImageUrl
     },
 
@@ -746,7 +761,7 @@ annotate service.WindFarmCorrelationAnalysis with @UI : {
       $Type  : 'UI.ReferenceFacet',
       ID     : 'HeaderGeneralInfo',
       Target : '@UI.FieldGroup#HeadInfo',
-      Label  : 'General Information'
+      Label  : '{i18n>GeneralInformation}'
     }
   ],
     Identification : [
@@ -760,3 +775,39 @@ annotate service.WindFarmCorrelationAnalysis with @UI : {
         { Value : densityRatedPowerProfile }
     ]
 };
+annotate service.WindFarmCorrelationAnalysis with {
+    rotorDiameterM @Common.Label : '{i18n>RotorDiameterM}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    nacelleHeightM @Common.Label : '{i18n>NacelleHeightM}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    wtRatedPowerMW @Common.Label : '{i18n>WtRatedPowerMw}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    numberWT @Common.Label : '{i18n>NumberOfWindTurbines}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    windFarmAreaKm2 @Common.Label : '{i18n>WindFarmAreaKm}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    windFarmDensityMWKm2 @Common.Label : '{i18n>WindFarmDensityMwkm}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    windFarmRatedPowerMW @Common.Label : '{i18n>WindFarmRatedPower}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    capacityFactorReal @Common.Label : '{i18n>CapacityFactorReal}'
+};
+
+annotate service.WindFarmCorrelationAnalysis with {
+    windFarmEfficiency @Common.Label : '{i18n>WindFarmEfficiency}'
+};
+

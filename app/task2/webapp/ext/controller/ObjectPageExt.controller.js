@@ -48,14 +48,14 @@ sap.ui.define([
         },
 
         _cleanupMapButton: function() {
-            // Remove existing modal (always safe to remove)
+            // Remove existing modal 
             const existingModal = document.querySelector('.wind-farm-map-modal');
             if (existingModal) {
                 existingModal.remove();
                 console.log("🗺️ MAP: Removed existing modal");
             }
             
-            // Only remove button if we're really leaving the page
+            
             const currentHash = window.location.hash;
             const shouldRemoveButton = !currentHash.includes('WindFarms(') && !currentHash.includes('/WindFarms');
             
@@ -66,7 +66,7 @@ sap.ui.define([
                     console.log("🗺️ MAP: Removed button (left WindFarms page)");
                 }
                 
-                // Remove route listener if exists
+            
                 if (this._routeChangeListener) {
                     window.removeEventListener('hashchange', this._routeChangeListener);
                     this._routeChangeListener = null;
@@ -79,7 +79,7 @@ sap.ui.define([
         _addMapButton: function() {
             console.log("🗺️ MAP: Adding map button...");
             
-            // DON'T cleanup existing button - keep it if it exists!
+            
             
             let attempts = 0;
             const maxAttempts = 15;
@@ -101,7 +101,7 @@ sap.ui.define([
 
         _createMapButton: function() {
             try {
-                // Check if button already exists - if yes, keep it
+                
                 if (document.querySelector('.wind-farm-map-button')) {
                     console.log("🗺️ MAP: Button already exists, keeping it");
                     return true;
@@ -119,7 +119,7 @@ sap.ui.define([
 
                 console.log("🗺️ MAP: Creating map button for:", oData.windFarm);
 
-                // Find a good location for the button (try multiple selectors)
+                
                 const containers = [
                     document.querySelector('.sapUxAPObjectPageHeaderContent'),
                     document.querySelector('.sapUxAPObjectPageSection'),
@@ -134,7 +134,7 @@ sap.ui.define([
 
                 const targetContainer = containers[0];
 
-                // Create map button - dauerhaft unten rechts
+                
                 const mapButton = document.createElement('button');
                 mapButton.className = 'wind-farm-map-button';
                 mapButton.innerHTML = '🗺️ Show Map';
@@ -185,7 +185,7 @@ sap.ui.define([
         },
 
         _setupGlobalRouteListener: function() {
-            // Check if global listener already exists
+            
             if (window.windFarmMapGlobalListener) {
                 console.log("🗺️ MAP: Global listener already exists");
                 return;
@@ -198,14 +198,14 @@ sap.ui.define([
                 console.log("🗺️ MAP: Global route change:", currentHash);
                 
                 if (currentHash.includes('WindFarms(')) {
-                    // We're on a WindFarms detail page
+                    
                     console.log("🗺️ MAP: On WindFarms page, checking button");
                     
                     setTimeout(() => {
                         const existingButton = document.querySelector('.wind-farm-map-button');
                         if (!existingButton) {
                             console.log("🗺️ MAP: No button found, trying to create one");
-                            // Try to create button with current page context
+                            
                             this._createButtonForCurrentPage();
                         } else {
                             console.log("🗺️ MAP: Button already exists");
@@ -213,7 +213,7 @@ sap.ui.define([
                     }, 1500);
                     
                 } else if (!currentHash.includes('/WindFarms')) {
-                    // We've left WindFarms entirely
+                    
                     console.log("🗺️ MAP: Left WindFarms area, cleaning up");
                     const existingButton = document.querySelector('.wind-farm-map-button');
                     const existingModal = document.querySelector('.wind-farm-map-modal');
@@ -223,7 +223,7 @@ sap.ui.define([
                 }
             };
             
-            // Store globally so it persists across extension reloads
+            
             window.windFarmMapGlobalListener = globalHandler;
             window.addEventListener('hashchange', globalHandler);
         },
@@ -238,7 +238,7 @@ sap.ui.define([
                 attempts++;
                 console.log(`🗺️ MAP: Current page button attempt ${attempts}/${maxAttempts}`);
                 
-                // Try to find any available SAP UI5 view with WindFarm data
+                
                 const views = sap.ui.getCore().byId ? 
                     Object.keys(sap.ui.getCore().mElements || {})
                         .map(id => sap.ui.getCore().byId(id))
@@ -259,7 +259,6 @@ sap.ui.define([
                             }
                         }
                     } catch (e) {
-                        // Continue searching
                     }
                 }
                 
@@ -279,7 +278,6 @@ sap.ui.define([
         _createButtonWithData: function(windFarmData) {
             console.log("🗺️ MAP: Creating button with data:", windFarmData.windFarm);
             
-            // Remove existing button
             const existingButton = document.querySelector('.wind-farm-map-button');
             if (existingButton) {
                 existingButton.remove();
@@ -330,8 +328,6 @@ sap.ui.define([
 
         _openMapModal: function(oData) {
             console.log("🗺️ MAP: Opening map modal for:", oData.windFarm);
-
-            // Remove existing modal if any (but NOT the button!)
             const existingModal = document.querySelector('.wind-farm-map-modal');
             if (existingModal) {
                 existingModal.remove();
@@ -370,7 +366,6 @@ sap.ui.define([
                 animation: slideIn 0.3s ease;
             `;
 
-            // Modal header mit zentriertem Pin und Name
             const modalHeader = document.createElement('div');
             modalHeader.style.cssText = `
                 background: linear-gradient(135deg, #0070f3 0%, #0056b3 100%);
@@ -394,7 +389,6 @@ sap.ui.define([
                 text-align: center;
             `;
 
-            // Spacer for layout
             const spacer = document.createElement('div');
             spacer.style.width = '30px';
 
@@ -428,7 +422,6 @@ sap.ui.define([
                 padding: 20px;
             `;
 
-            // Coordinates display - genau wie im Screenshot
             const coordsDisplay = document.createElement('div');
             coordsDisplay.innerHTML = `
                 <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center;">
@@ -507,7 +500,7 @@ sap.ui.define([
                 MessageToast.show("Opening Google Maps...");
             });
 
-            // OpenStreetMap button - zentrierter Text
+            // OpenStreetMap button 
             const osmBtn = createActionButton('OpenStreetMap', '🌍', '#7ebc6f', () => {
                 window.open(`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=12/${lat}/${lng}`, '_blank');
                 MessageToast.show("Opening OpenStreetMap...");
@@ -523,16 +516,13 @@ sap.ui.define([
                 });
             });
 
-            // Weather button - mit besserer Wetter-Integration
+            // Weather button
             const weatherBtn = createActionButton('Weather', '🌤️', '#ff9800', () => {
-                // Versuche verschiedene Wetter-Services für bessere Kompatibilität
                 const weatherUrls = [
                     `https://www.windy.com/${lat.toFixed(3)}/${lng.toFixed(3)}?${lat.toFixed(3)},${lng.toFixed(3)},11`,
                     `https://openweathermap.org/weathermap?basemap=map&cities=true&layer=temperature&lat=${lat}&lon=${lng}&zoom=10`,
                     `https://weather.com/weather/today/l/${lat.toFixed(4)},${lng.toFixed(4)}`
                 ];
-                
-                // Verwende Windy.com - funktioniert am besten mit Koordinaten
                 window.open(weatherUrls[0], '_blank');
                 MessageToast.show(`🌤️ Opening weather for coordinates ${lat.toFixed(3)}, ${lng.toFixed(3)}`);
             }, { 'text-align': 'center' });
@@ -540,7 +530,6 @@ sap.ui.define([
             // Close map button
             const closeMapBtn = createActionButton('Close Map', '❌', '#dc3545', () => {
                 modalOverlay.remove();
-                // DON'T cleanup the button when closing modal!
             }, { 'width': '100%', 'margin-top': '10px' });
 
             // Assemble buttons
@@ -559,7 +548,7 @@ sap.ui.define([
             modalContent.appendChild(modalBody);
             modalOverlay.appendChild(modalContent);
 
-            // Event handlers - NUR Modal schließen, nicht Button entfernen
+            // Event handlers
             closeButton.onclick = () => modalOverlay.remove();
             modalOverlay.onclick = (e) => {
                 if (e.target === modalOverlay) {
@@ -567,7 +556,7 @@ sap.ui.define([
                 }
             };
 
-            // Escape key handler - NUR Modal schließen
+            // Escape key handler
             const escapeHandler = (e) => {
                 if (e.key === 'Escape') {
                     modalOverlay.remove();
@@ -576,7 +565,6 @@ sap.ui.define([
             };
             document.addEventListener('keydown', escapeHandler);
 
-            // Add CSS animations
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes fadeIn {
@@ -590,7 +578,6 @@ sap.ui.define([
             `;
             document.head.appendChild(style);
 
-            // Add to page
             document.body.appendChild(modalOverlay);
 
             console.log("🗺️ MAP: Modal opened successfully!");

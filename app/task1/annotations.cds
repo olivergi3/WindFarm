@@ -50,42 +50,50 @@ annotate service.WindFarmAnalytics with {
     
     // Capacity Factor with Industry Benchmark Tooltip
     capacityFactorReal @(
-        Common.QuickInfo : 'Industry Comparison: Range 24%-51.5% | Average: 40.3% | Median: 40.9%'
+        Common.QuickInfo : 'Industry Comparison: Range 24%-51.5% | Average: 40.3% | Median: 40.9%',
+        Common.Label : '{i18n>CapacityFactorReal}',
     );
     
     // Wind Farm Efficiency with Industry Benchmark Tooltip  
     windFarmEfficiency @(
-        Common.QuickInfo : 'Industry Comparison: Range 53.2%-82.4% | Average: 68.3% | Median: 67.5%'
+        Common.QuickInfo : 'Industry Comparison: Range 53.2%-82.4% | Average: 68.3% | Median: 67.5%',
+        Common.Label : '{i18n>WindFarmEfficiency}',
     );
     
     // Wind Farm Rated Power with Industry Benchmark Tooltip
     windFarmRatedPowerMW @(
-        Common.QuickInfo : 'Industry Comparison: Range 48.3-100000 MW | Average: 634.3 MW | Median: 400 MW'
+        Common.QuickInfo : 'Industry Comparison: Range 48.3-100000 MW | Average: 634.3 MW | Median: 400 MW',
+        Common.Label : '{i18n>WindFarmRatedPower}',
     );
     
     // Power Density with Industry Benchmark Tooltip
     windFarmDensityMWKm2 @(
-        Common.QuickInfo : 'Industry Comparison: Range 2-20 MW/km² | Average: 9.3 MW/km² | Median: 8.6 MW/km²'
+        Common.QuickInfo : 'Industry Comparison: Range 2-20 MW/km² | Average: 9.3 MW/km² | Median: 8.6 MW/km²',
+        Common.Label : '{i18n>WindFarmDensityMwkm}',
     );
     
     // Number of Turbines with Industry Benchmark Tooltip
     numberWT @(
-        Common.QuickInfo : 'Industry Comparison: Range 12-6667 turbines | Average: 184.6 turbines | Median: 72 turbines'
+        Common.QuickInfo : 'Industry Comparison: Range 12-6667 turbines | Average: 184.6 turbines | Median: 72 turbines',
+        Common.Label : '{i18n>NumberOfWindTurbines}',
     );
     
     // Wind Farm Area with Industry Benchmark Tooltip
     windFarmAreaKm2 @(
-        Common.QuickInfo : 'Industry Comparison: Range 2-5000 turbines | Average: 247.58 km² | Median: 39 km²'
+        Common.QuickInfo : 'Industry Comparison: Range 2-5000 turbines | Average: 247.58 km² | Median: 39 km²',
+        Common.Label : '{i18n>WindFarmAreaKm}',
     );
     
     // Rotor Diameter with Industry Benchmark Tooltip
     rotorDiameterM @(
-        Common.QuickInfo : 'Larger rotors capture more wind energy. Modern offshore turbines typically 120-200m diameter.'
+        Common.QuickInfo : 'Larger rotors capture more wind energy. Modern offshore turbines typically 120-200m diameter.',
+        Common.Label : '{i18n>RotorDiameterM}',
     );
     
     // Nacelle Height with Industry Benchmark Tooltip
     nacelleHeightM @(
-        Common.QuickInfo : 'Higher nacelles access stronger, more consistent winds. Offshore turbines typically 80-150m height.'
+        Common.QuickInfo : 'Higher nacelles access stronger, more consistent winds. Offshore turbines typically 80-150m height.',
+        Common.Label : '{i18n>NacelleHeightM}',
     );
 }
 
@@ -138,7 +146,7 @@ annotate service.WindFarmAnalytics with @(
     Name                 : 'avgCapacityFactor',
     AggregationMethod    : 'average',
     AggregatableProperty : capacityFactorReal,
-    @Common.Label        : 'Avg Capacity Factor (%)'
+    @Common.Label        : '{i18n>AvgCapacityFactor}'
   },
   Analytics.AggregatedProperty #totalPower : {
     Name                 : 'totalPower',
@@ -150,13 +158,13 @@ annotate service.WindFarmAnalytics with @(
     Name                 : 'avgEfficiency',
     AggregationMethod    : 'average',
     AggregatableProperty : windFarmEfficiency,
-    @Common.Label        : 'Avg Efficiency (%)'
+    @Common.Label        : '{i18n>Avgefficiency}'
   },
   Analytics.AggregatedProperty #countWindFarms : {
     Name                 : 'countWindFarms',
     AggregationMethod    : 'countdistinct',
     AggregatableProperty : windFarm,
-    @Common.Label        : 'Count of Wind Farms'
+    @Common.Label        : '{i18n>CountOfWindFarms}'
   }
 );
 
@@ -250,11 +258,11 @@ annotate service.WindFarmAnalytics with @UI.LineItem : [
   {
     $Type: 'UI.DataFieldForAction',
     Action: 'WindFarmService.EntityContainer/checkAI',
-    Label: '{i18n>Ask AI}'
+    Label: '{i18n>Askai}'
   },
   {
     Value          : windFarm,
-    Label          : 'Wind Farm',
+    Label          : '{i18n>WindFarm}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'14em'}
   }, {
@@ -264,37 +272,37 @@ annotate service.WindFarmAnalytics with @UI.LineItem : [
     @HTML5.CssDefaults: {width:'10em'}
   }, {
     Value          : waterBody,
-    Label          : 'Sea',
+    Label          : '{i18n>Sea}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'10em'}
   }, {
     Value          : windFarmRatedPowerMW,
-    Label          : 'Rated Power (MW)',
+    Label          : '{i18n>RatedPowerMw}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'12em'}
   }, {
     Value          : windFarmDensityMWKm2,
-    Label          : 'Density (MW/km²)',
+    Label          : '{i18n>DensityMwkm}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'12em'}
   }, {
     Value          : capacityFactorReal,
-    Label          : 'Capacity Factor (%)',
+    Label          : '{i18n>CapacityFactor}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'14em'}
   }, {
     Value          : windFarmEfficiency,
-    Label          : 'Efficiency (%)',
+    Label          : '{i18n>Efficiency}',
     @UI.Importance : #High,
     @HTML5.CssDefaults: {width:'12em'}
   }, {
     Value          : numberWT,
-    Label          : 'Number of Turbines',
+    Label          : '{i18n>NumberOfTurbines}',
     @UI.Importance : #Medium,
     @HTML5.CssDefaults: {width:'12em'}
   }, {
     Value          : windFarmAreaKm2,
-    Label          : 'Wind Farm Area (km²)',
+    Label          : '{i18n>WindFarmAreaKm}',
     @UI.Importance : #Medium,
     @HTML5.CssDefaults: {width:'12em'}
   },
@@ -330,8 +338,8 @@ annotate service.WindFarmAnalytics with @UI.SelectionFields : [
 // ENHANCED OBJECT PAGE with General Info in Header and Reorganized Metrics
 annotate service.WindFarmAnalytics with @UI : {
   HeaderInfo : {
-    TypeName       : 'Wind Farm',
-    TypeNamePlural : 'Wind Farm Analytics',
+    TypeName       : '{i18n>WindFarm}',
+    TypeNamePlural : '{i18n>WindFarmAnalytics}',
     Title          : { Value : windFarm },
     Description    : { Value : country }, 
     ImageUrl       : windFarmImageUrl
@@ -343,7 +351,7 @@ annotate service.WindFarmAnalytics with @UI : {
       $Type  : 'UI.ReferenceFacet',
       ID     : 'HeaderGeneralInfo',
       Target : '@UI.FieldGroup#HeaderGeneralInfo',
-      Label  : 'General Information'
+      Label  : '{i18n>GeneralInformation}'
     }
   ],
   
@@ -357,39 +365,39 @@ annotate service.WindFarmAnalytics with @UI : {
   Facets : [
     {
       $Type  : 'UI.CollectionFacet',
-      Label  : 'Performance Metrics',
+      Label  : '{i18n>PerformanceMetrics}',
       ID     : 'PerformanceMetrics',
       Facets : [
         {
           $Type  : 'UI.ReferenceFacet',
           ID     : 'PowerPerformance',
           Target : '@UI.FieldGroup#PowerPerformance',
-          Label  : 'Power & Efficiency'
+          Label  : '{i18n>PowerEfficiency}'
         },
         {
           $Type  : 'UI.ReferenceFacet',
           ID     : 'CapacityFactors',
           Target : '@UI.FieldGroup#CapacityFactors',
-          Label  : 'Capacity Factors'
+          Label  : '{i18n>CapacityFactors}'
         }
       ]
     },
     {
       $Type  : 'UI.CollectionFacet',
-      Label  : 'Characteristics',
+      Label  : '{i18n>Characteristics}',
       ID     : 'Characteristics',
       Facets : [
         {
           $Type  : 'UI.ReferenceFacet',
           ID     : 'TurbineCharacteristics',
           Target : '@UI.FieldGroup#TurbineCharacteristics',
-          Label  : 'Turbine Specifications'
+          Label  : '{i18n>TurbineSpecifications}'
         },
         {
           $Type  : 'UI.ReferenceFacet',
           ID     : 'WindCharacteristics',
           Target : '@UI.FieldGroup#WindCharacteristics',
-          Label  : 'Wind Characteristics'
+          Label  : '{i18n>WindCharacteristics}'
         }
       ]
     }
@@ -401,22 +409,22 @@ annotate service.WindFarmAnalytics with @UI : {
       { 
         $Type : 'UI.DataField',
         Value : waterBody, 
-        Label : 'Sea'
+        Label : '{i18n>Sea}'
       },
       { 
         $Type : 'UI.DataField',
         Value : windFarmAreaKm2, 
-        Label : 'Total Area (km²)'
+        Label : '{i18n>TotalAreaKm}'
       },
       { 
         $Type : 'UI.DataField',
         Value : numberWT, 
-        Label : 'Number of Turbines'
+        Label : '{i18n>NumberOfTurbines}'
       },
       { 
         $Type : 'UI.DataField',
         Value : windFarmRatedPowerMW, 
-        Label : 'Total Rated Power (MW)',
+        Label : '{i18n>TotalRatedPowerMw}',
         @UI.Hidden,
       }
     ]
@@ -428,22 +436,22 @@ annotate service.WindFarmAnalytics with @UI : {
       { 
         $Type : 'UI.DataField',
         Value : windFarmRatedPowerMW, 
-        Label : 'Rated Power (MW)'
+        Label : '{i18n>RatedPowerMw}'
       },
       { 
         $Type : 'UI.DataField',
         Value : windFarmEfficiency, 
-        Label : 'Farm Efficiency (%)'
+        Label : '{i18n>FarmEfficiency}'
       },
       { 
         $Type : 'UI.DataField',
         Value : windFarmDensityMWKm2, 
-        Label : 'Power Density (MW/km²)'
+        Label : '{i18n>PowerDensityMwkm}'
       },
       { 
         $Type : 'UI.DataField',
         Value : ratioCapacityFactorRealModel, 
-        Label : 'Real/Model Ratio'
+        Label : '{i18n>RealmodelRatio}'
       }
     ]
   },
@@ -453,22 +461,22 @@ annotate service.WindFarmAnalytics with @UI : {
       { 
         $Type : 'UI.DataField',
         Value : capacityFactorReal, 
-        Label : 'Real Capacity Factor (%)'
+        Label : '{i18n>RealCapacityFactor}'
       },
       { 
         $Type : 'UI.DataField',
         Value : capacityFactorModel, 
-        Label : 'Model Capacity Factor (%)'
+        Label : '{i18n>ModelCapacityFactor}'
       },
       { 
         $Type : 'UI.DataField',
         Value : capacityFactorInfiniteFarm, 
-        Label : 'Infinite Farm Factor (%)'
+        Label : '{i18n>InfiniteFarmFactor}'
       },
       { 
         $Type : 'UI.DataField',
         Value : capacityFactorIsolatedTurbine, 
-        Label : 'Isolated Turbine Factor (%)'
+        Label : '{i18n>IsolatedTurbineFactor}'
       }
     ]
   },
@@ -479,17 +487,17 @@ annotate service.WindFarmAnalytics with @UI : {
       { 
         $Type : 'UI.DataField',
         Value : wtRatedPowerMW, 
-        Label : 'Turbine Rated Power (MW)'
+        Label : '{i18n>TurbineRatedPowerMw}'
       },
       { 
         $Type : 'UI.DataField',
         Value : rotorDiameterM, 
-        Label : 'Rotor Diameter (m)'
+        Label : '{i18n>RotorDiameterM}'
       },
       { 
         $Type : 'UI.DataField',
         Value : nacelleHeightM, 
-        Label : 'Nacelle Height (m)'
+        Label : '{i18n>NacelleHeightM}'
       }
     ]
   },
@@ -499,17 +507,45 @@ annotate service.WindFarmAnalytics with @UI : {
       { 
         $Type : 'UI.DataField',
         Value : windKw, 
-        Label : 'Wind Speed (kW)'
+        Label : '{i18n>WindSpeedKw}'
       },
       { 
         $Type : 'UI.DataField',
         Value : windLambda, 
-        Label : 'Wind Lambda'
+        Label : '{i18n>WindLambda}'
       }
     ]
   }
 };
 
 annotate service.WindFarmAnalytics with {
-    windFarm @Common.Label : '{i18n>Wind Farm Name}';
+    windFarm @Common.Label : '{i18n>WindFarmName}';
 };
+annotate service.WindFarmAnalytics with {
+    windKw @Common.Label : '{i18n>WindKw}'
+};
+
+annotate service.WindFarmAnalytics with {
+    windLambda @Common.Label : '{i18n>WindLambda}'
+};
+
+annotate service.WindFarmAnalytics with {
+    wtRatedPowerMW @Common.Label : '{i18n>WtRatedPowerMw}'
+};
+
+annotate service.WindFarmAnalytics with {
+    capacityFactorModel @Common.Label : '{i18n>CapacityFactorModel}'
+};
+
+annotate service.WindFarmAnalytics with {
+    capacityFactorInfiniteFarm @Common.Label : '{i18n>CapacityFactorInfiniteFarm}'
+};
+
+annotate service.WindFarmAnalytics with {
+    capacityFactorIsolatedTurbine @Common.Label : '{i18n>CapacityFactorIsolatedTurbine}'
+};
+
+annotate service.WindFarmAnalytics with {
+    ratioCapacityFactorRealModel @Common.Label : '{i18n>RatioCfRealmodel}'
+};
+

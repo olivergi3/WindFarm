@@ -5,8 +5,8 @@ annotate service.WindFarms with @(
     // Object Page Header Information
     UI.HeaderInfo: {
         $Type: 'UI.HeaderInfoType',
-        TypeName: 'Wind Farm',
-        TypeNamePlural: 'Wind Farms',
+        TypeName: '{i18n>WindFarm}',
+        TypeNamePlural: '{i18n>WindFarms}',
         Title: {
             $Type: 'UI.DataField',
             Value: windFarm
@@ -55,7 +55,7 @@ annotate service.WindFarms with @(
     UI.DataPoint #OverallRating: {
         $Type: 'UI.DataPointType',
         Value: overallRating,
-        Title: 'Overall Rating',
+        Title: '{i18n>OverallRating}',
         TargetValue: 5.0,
         Visualization: #Rating
     },
@@ -63,42 +63,43 @@ annotate service.WindFarms with @(
      UI.DataPoint #ListRating: {
         $Type: 'UI.DataPointType',
         Value: overallRating,
-        Title: 'Rating',
+        Title: '{i18n>Rating}',
         TargetValue: 5.0,
         Visualization: #Rating,
-        ![@Common.QuickInfo]: 'Overall Rating'
+        ![@Common.QuickInfo]: '{i18n>OverallRating}'
     },
     
     // Data Points with conditional criticality
     UI.DataPoint #CapacityFactor: {
         $Type: 'UI.DataPointType',
         Value: capacityFactorReal,
-        Title: 'Capacity Factor (%)',
+        Title: '{i18n>CapacityFactor}',
         Criticality: capacityFactorCriticality
     },
     
     UI.DataPoint #Efficiency: {
         $Type: 'UI.DataPointType', 
         Value: windFarmEfficiency,
-        Title: 'Wind Farm Efficiency (%)',
+        Title: '{i18n>WindFarmEfficiency}',
         Criticality: efficiencyCriticality
     },
     
     UI.DataPoint #PowerRating: {
         $Type: 'UI.DataPointType',
         Value: windFarmRatedPowerMW,
-        Title: 'Total Capacity (MW)'
+        Title: '{i18n>TotalCapacity}'
     },
     
     UI.DataPoint #TurbineCount: {
         $Type: 'UI.DataPointType',
         Value: numberWT,
-        Title: 'Wind Turbines'
+        Title: '{i18n>WindTurbines}'
     },
     
     // Selection fields for filtering
     UI.SelectionFields: [
         country,
+        overallRating,
         capacityFactorCategory,
         efficiencyCategory,
         powerRatingCategory,
@@ -143,12 +144,12 @@ annotate service.WindFarms with @(
         {
             $Type: 'UI.DataFieldForAction',
             Action: 'WindFarmService.EntityContainer/checkAI',
-            Label: '{i18n>Ask AI}'
+            Label: '{i18n>Askai}'
         },
         {
             $Type: 'UI.DataField',
             Value: windFarm,
-            Label: 'Wind Farm Name',
+            Label: '{i18n>WindFarmName}',
             ![@UI.Importance]: #High,
             ![@HTML5.CssDefaults]: {
                 width: '20%'
@@ -157,7 +158,7 @@ annotate service.WindFarms with @(
         {
             $Type: 'UI.DataField', 
             Value: country,
-            Label: 'Country',
+            Label: '{i18n>Country}',
             ![@UI.Importance]: #High,
             ![@HTML5.CssDefaults]: {
                 width: '20%'
@@ -166,7 +167,7 @@ annotate service.WindFarms with @(
         {
             $Type: 'UI.DataFieldForAnnotation',
             Target: '@UI.DataPoint#ListRating',
-            Label: 'Rating',
+            Label: '{i18n>OverallRating}',
             ![@UI.Importance]: #High,
             ![@HTML5.CssDefaults]: {
                 width: '20%'
@@ -175,7 +176,7 @@ annotate service.WindFarms with @(
         {
             $Type: 'UI.DataField',
             Value: description,
-            Label: 'Description',
+            Label: '{i18n>Description}',
             ![@UI.Importance]: #High,
             ![@HTML5.CssDefaults]: {
                 width: '40%'
@@ -187,7 +188,7 @@ annotate service.WindFarms with @(
         {
             $Type: 'UI.DataField',
             Value: windFarm,
-            Label: 'Wind Farm Name'
+            Label: '{i18n>WindFarmName}'
         }
     ],
     
@@ -198,22 +199,22 @@ annotate service.WindFarms with @(
             {
                 $Type : 'UI.DataField',
                 Value : windFarm,
-                Label : 'Wind Farm Name'
+                Label : '{i18n>WindFarmName}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : country,
-                Label : 'Location Country'
+                Label : '{i18n>LocationCountry}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : waterBody,
-                Label : 'Sea'
+                Label : '{i18n>Sea}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : description,
-                Label : 'Description'
+                Label : '{i18n>Description}'
             }
         ]
     },
@@ -225,12 +226,12 @@ annotate service.WindFarms with @(
             {
                 $Type : 'UI.DataField',
                 Value : latitude,
-                Label : 'Latitude'
+                Label : '{i18n>Latitude}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : longitude,
-                Label : 'Longitude'
+                Label : '{i18n>Longitude}'
             },
         ]
     },
@@ -241,22 +242,22 @@ annotate service.WindFarms with @(
             {
                 $Type : 'UI.DataField',
                 Value : numberWT,
-                Label : '{i18n>Number of Turbines}',
+                Label : '{i18n>NumberOfTurbines}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmAreaKm2,
-                Label : '{i18n>Total Area (km²)}',
+                Label : '{i18n>TotalAreaKm1}',
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorDiameterM,
-                Label : '{i18n>Average Rotor Diameter (m)}'
+                Label : '{i18n>AverageRotorDiameter}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : nacelleHeightM,
-                Label : '{i18n>Average Nacelle Height (m)}'
+                Label : '{i18n>AverageNacelleHeight}'
             },
         ]
     },
@@ -267,27 +268,27 @@ annotate service.WindFarms with @(
             {
                 $Type : 'UI.DataField',
                 Value : capacityFactorReal,
-                Label : '{i18n>Capacity Factor (%)}'
+                Label : '{i18n>CapacityFactor}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmEfficiency,
-                Label : '{i18n>Wind Farm Efficiency (%)}'
+                Label : '{i18n>WindFarmEfficiency}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmRatedPowerMW,
-                Label : '{i18n>Total Rated Power (MW)}'
+                Label : '{i18n>TotalRatedPower}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtRatedPowerMW,
-                Label : '{i18n>Wind Turbine Rated Power (MW)}'
+                Label : '{i18n>WindTurbineRatedPower}'
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmDensityMWKm2,
-                Label : '{i18n>Power Density (MW/km²)}',
+                Label : '{i18n>PowerDensity}',
             },
         ]
     },
@@ -298,55 +299,55 @@ annotate service.WindFarms with @(
             {
                 $Type : 'UI.DataField',
                 Value : turbineCountCategory,
-                Label: '{i18n>Turbine Count Class}',
+                Label: '{i18n>TurbineCountClass}',
                 Criticality: turbineCountCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : windFarmAreaCategory,
-                Label: '{i18n>Wind Farm Area Class}',
+                Label: '{i18n>WindFarmAreaClass}',
                 Criticality: windFarmAreaCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : efficiencyCategory,
-                Label: '{i18n>Efficiency Class}',
+                Label: '{i18n>EfficiencyClass}',
                 Criticality: efficiencyCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : powerRatingCategory,
-                Label: '{i18n>Power Rating Class}',
+                Label: '{i18n>PowerRatingClass}',
                 Criticality: powerRatingCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : capacityFactorCategory,
-                Label: '{i18n>Capacity Factor Class}',
+                Label: '{i18n>CapacityFactorClass}',
                 Criticality: capacityFactorCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : densityCategory,
-                Label: '{i18n>Density Class}',
+                Label: '{i18n>DensityClass}',
                 Criticality: densityCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : rotorDiameterCategory,
-                Label: '{i18n>Rotor Diameter Class}',
+                Label: '{i18n>RotorDiameterClass}',
                 Criticality: rotorDiameterCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : nacelleHeightCategory,
-                Label: '{i18n>Nacelle Height Class}',
+                Label: '{i18n>NacelleHeightClass}',
                 Criticality: nacelleHeightCriticality
             },
             {
                 $Type : 'UI.DataField',
                 Value : wtRatedPowerCategory,
-                Label: '{i18n>WT Rated Power Class}',
+                Label: '{i18n>WtRatedPowerClass}',
                 Criticality: wtRatedPowerCriticality
             }
         ]
@@ -357,25 +358,25 @@ annotate service.WindFarms with @(
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'OverviewFacet',
-            Label : '{i18n>Wind Farm Overview}',
+            Label : '{i18n>WindFarmOverview}',
             Target : '@UI.FieldGroup#OverviewGroup'
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'LocationMapFacet',
-            Label : '{i18n>Location & Map}',
+            Label : '{i18n>Location}',
             Target : '@UI.FieldGroup#LocationGroup',
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'TechnicalFacet',
-            Label : '{i18n>Technical Specifications}',
+            Label : '{i18n>TechnicalSpecifications}',
             Target : '@UI.FieldGroup#TechnicalSpecs'
         },
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'PerformanceFacet',
-            Label : '{i18n>Performance Metrics}',
+            Label : '{i18n>PerformanceMetrics}',
             Target : '@UI.FieldGroup#PerformanceMetrics'
         },
         {
@@ -409,11 +410,12 @@ annotate service.WindFarms with {
     overallRating @Core.Computed: true;
 }
 
-// Enhanced Value Help annotations for all filter fields
+// Field Labels for Filter Display
 annotate service.WindFarms with {
     country @(
+        Common.Label: '{i18n>Country}',
         Common.ValueList: {
-            Label: 'Countries',
+            Label: '{i18n>Countries}',
             CollectionPath: 'CountryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -427,8 +429,9 @@ annotate service.WindFarms with {
     );
     
     capacityFactorCategory @(
+        Common.Label: '{i18n>CapacityFactorCategory}',
         Common.ValueList: {
-            Label: 'Performance Categories',
+            Label: '{i18n>CapacityFactorCategories}',
             CollectionPath: 'CapacityFactorCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -442,8 +445,9 @@ annotate service.WindFarms with {
     );
     
     efficiencyCategory @(
+        Common.Label: '{i18n>EfficiencyCategory}',
         Common.ValueList: {
-            Label: 'Efficiency Categories',
+            Label: '{i18n>EfficiencyCategories}',
             CollectionPath: 'EfficiencyCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -457,8 +461,9 @@ annotate service.WindFarms with {
     );
     
     powerRatingCategory @(
+        Common.Label: '{i18n>PowerRatingCategory}',
         Common.ValueList: {
-            Label: 'Power Rating Categories',
+            Label: '{i18n>PowerRatingCategories}',
             CollectionPath: 'PowerRatingCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -472,8 +477,9 @@ annotate service.WindFarms with {
     );
     
     densityCategory @(
+        Common.Label: '{i18n>DensityCategory}',
         Common.ValueList: {
-            Label: 'Density Categories',
+            Label: '{i18n>DensityCategories}',
             CollectionPath: 'DensityCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -487,8 +493,9 @@ annotate service.WindFarms with {
     );
     
     turbineCountCategory @(
+        Common.Label: '{i18n>TurbineCountCategory}',
         Common.ValueList: {
-            Label: 'Turbine Count Categories',
+            Label: '{i18n>TurbineCountCategories}',
             CollectionPath: 'TurbineCountCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -502,8 +509,9 @@ annotate service.WindFarms with {
     );
     
     rotorDiameterCategory @(
+        Common.Label: '{i18n>RotorDiameterCategory}',
         Common.ValueList: {
-            Label: 'Rotor Diameter Categories',
+            Label: '{i18n>RotorDiameterCategories}',
             CollectionPath: 'RotorDiameterCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -517,8 +525,9 @@ annotate service.WindFarms with {
     );
     
     nacelleHeightCategory @(
+        Common.Label: '{i18n>NacelleHeightCategory}',
         Common.ValueList: {
-            Label: 'Nacelle Height Categories',
+            Label: '{i18n>NacelleHeightCategories}',
             CollectionPath: 'NacelleHeightCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -532,8 +541,9 @@ annotate service.WindFarms with {
     );
     
     windFarmAreaCategory @(
+        Common.Label: '{i18n>WindFarmAreaCategory}',
         Common.ValueList: {
-            Label: 'Wind Farm Area Categories',
+            Label: '{i18n>WindFarmAreaCategories}',
             CollectionPath: 'WindFarmAreaCategoryValueHelp',
             SearchSupported: true,
             Parameters: [
@@ -546,4 +556,7 @@ annotate service.WindFarms with {
         }
     );
 
+    overallRating @(
+        Common.Label: '{i18n>OverallRating}'
+    );
 }
